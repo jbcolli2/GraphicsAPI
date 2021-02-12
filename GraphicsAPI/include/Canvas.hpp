@@ -11,7 +11,7 @@
 #include <SFML/Graphics.hpp>
 
 
-class Screen
+class Canvas
 {
     // The SFML object needed to draw to the window
     sf::Image screenImage_;
@@ -21,7 +21,7 @@ class Screen
     int Sw_, Sh_;  // number of pixels on the screen in each direction
     
 public:
-    Screen(int Sw, int Sh);
+    Canvas(int Sw, int Sh);
     
     void setPixel(int x, int y, sf::Color color);
     

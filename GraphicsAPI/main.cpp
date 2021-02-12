@@ -8,8 +8,9 @@
 #include <iostream>
 #include <chrono>
 
-#include "Canvas.hpp"
-#include "Scene.hpp"
+//#include "Canvas.hpp"
+//#include "Scene.hpp"
+#include "Renderer.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -27,13 +28,13 @@ int main(int argc, const char * argv[]) {
     int circ_y = -Sh/2;
     // run the program as long as the window is open
     
-    
+    sf::Event event;
 
     while (window.isOpen())
     {
         auto start = std::chrono::steady_clock::now();
         // check all the window's events that were triggered since the last iteration of the loop
-        sf::Event event;
+        
         while (window.pollEvent(event))
         {
             // "close requested" event: we close the window

@@ -10,7 +10,7 @@
 #include "Canvas.hpp"
 
 
-Screen::Screen(int Sw, int Sh)
+Canvas::Canvas(int Sw, int Sh)
 {
     Sw_ = Sw;
     Sh_ = Sh;
@@ -19,7 +19,7 @@ Screen::Screen(int Sw, int Sh)
 }
 
 
-void Screen::setPixel(int x, int y, sf::Color color)
+void Canvas::setPixel(int x, int y, sf::Color color)
 {
     int Sx = 0.5*Sw_ + x;
     int Sy = 0.5*Sh_ - y;
@@ -28,7 +28,7 @@ void Screen::setPixel(int x, int y, sf::Color color)
 }
 
 
-void Screen::setScreenSprite(sf::Sprite& sprite)
+void Canvas::setScreenSprite(sf::Sprite& sprite)
 {
     screenTexture_.loadFromImage(screenImage_);
     sprite.setTexture(screenTexture_);
