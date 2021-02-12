@@ -1,0 +1,363 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B7003A6C25D2C883001DAE81 /* SFML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7003A6B25D2C883001DAE81 /* SFML.framework */; };
+		B7003A7825D2C9E8001DAE81 /* sfml-window.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7003A7725D2C9E8001DAE81 /* sfml-window.framework */; };
+		B7003A7B25D2C9FE001DAE81 /* sfml-system.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7003A7A25D2C9FE001DAE81 /* sfml-system.framework */; };
+		B7003A7F25D2D108001DAE81 /* sfml-graphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7003A7E25D2D108001DAE81 /* sfml-graphics.framework */; };
+		B7003A8425D2D1E3001DAE81 /* sfml-network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7003A8225D2D1E3001DAE81 /* sfml-network.framework */; };
+		B7003A8525D2D1E3001DAE81 /* sfml-audio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7003A8325D2D1E3001DAE81 /* sfml-audio.framework */; };
+		B7003A8B25D38292001DAE81 /* Canvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7003A8A25D38292001DAE81 /* Canvas.cpp */; };
+		B7003A8F25D48761001DAE81 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7003A8D25D48761001DAE81 /* Scene.cpp */; };
+		B7003A9425D62540001DAE81 /* VectorUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7003A9325D62540001DAE81 /* VectorUtil.cpp */; };
+		B7213E1225D07D1B00F71102 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7213E1125D07D1B00F71102 /* main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B7213E0C25D07D1B00F71102 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		B7003A5C25D0E7AD001DAE81 /* GraphicAPI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GraphicAPI.entitlements; sourceTree = "<group>"; };
+		B7003A6B25D2C883001DAE81 /* SFML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SFML.framework; path = ../../../../../../../Library/Frameworks/SFML.framework; sourceTree = "<group>"; };
+		B7003A6F25D2C8E1001DAE81 /* SFML */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = SFML; path = ../../../../../../../Library/Frameworks/SFML.framework/Versions/2.5.1/SFML; sourceTree = "<group>"; };
+		B7003A7425D2C9AE001DAE81 /* sfml-window.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "sfml-window.framework"; path = "../../../../BBS/GameDev/SFML/SFML-2.5.1-macos-clang/Frameworks/sfml-window.framework"; sourceTree = "<group>"; };
+		B7003A7725D2C9E8001DAE81 /* sfml-window.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "sfml-window.framework"; path = "../../../../../../../Library/Frameworks/sfml-window.framework"; sourceTree = "<group>"; };
+		B7003A7A25D2C9FE001DAE81 /* sfml-system.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "sfml-system.framework"; path = "../../../../../../../Library/Frameworks/sfml-system.framework"; sourceTree = "<group>"; };
+		B7003A7E25D2D108001DAE81 /* sfml-graphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "sfml-graphics.framework"; path = "../../../../../../../Library/Frameworks/sfml-graphics.framework"; sourceTree = "<group>"; };
+		B7003A8225D2D1E3001DAE81 /* sfml-network.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "sfml-network.framework"; path = "../../../../../../../Library/Frameworks/sfml-network.framework"; sourceTree = "<group>"; };
+		B7003A8325D2D1E3001DAE81 /* sfml-audio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "sfml-audio.framework"; path = "../../../../../../../Library/Frameworks/sfml-audio.framework"; sourceTree = "<group>"; };
+		B7003A8825D336EA001DAE81 /* Canvas.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Canvas.hpp; path = include/Canvas.hpp; sourceTree = "<group>"; };
+		B7003A8A25D38292001DAE81 /* Canvas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Canvas.cpp; path = src/Canvas.cpp; sourceTree = "<group>"; };
+		B7003A8D25D48761001DAE81 /* Scene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Scene.cpp; path = src/Scene.cpp; sourceTree = "<group>"; };
+		B7003A9125D487AD001DAE81 /* Scene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Scene.hpp; path = include/Scene.hpp; sourceTree = "<group>"; };
+		B7003A9325D62540001DAE81 /* VectorUtil.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = VectorUtil.cpp; path = src/VectorUtil.cpp; sourceTree = "<group>"; };
+		B7003A9625D62598001DAE81 /* VectorUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = VectorUtil.hpp; path = include/VectorUtil.hpp; sourceTree = "<group>"; };
+		B7003A9925D7438A001DAE81 /* Renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
+		B7213E0E25D07D1B00F71102 /* GraphicAPI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GraphicAPI; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7213E1125D07D1B00F71102 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B7213E0B25D07D1B00F71102 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7003A7F25D2D108001DAE81 /* sfml-graphics.framework in Frameworks */,
+				B7003A8425D2D1E3001DAE81 /* sfml-network.framework in Frameworks */,
+				B7003A8525D2D1E3001DAE81 /* sfml-audio.framework in Frameworks */,
+				B7003A7B25D2C9FE001DAE81 /* sfml-system.framework in Frameworks */,
+				B7003A7825D2C9E8001DAE81 /* sfml-window.framework in Frameworks */,
+				B7003A6C25D2C883001DAE81 /* SFML.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B7003A5425D0D993001DAE81 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B7003A8325D2D1E3001DAE81 /* sfml-audio.framework */,
+				B7003A8225D2D1E3001DAE81 /* sfml-network.framework */,
+				B7003A7E25D2D108001DAE81 /* sfml-graphics.framework */,
+				B7003A7A25D2C9FE001DAE81 /* sfml-system.framework */,
+				B7003A7425D2C9AE001DAE81 /* sfml-window.framework */,
+				B7003A7725D2C9E8001DAE81 /* sfml-window.framework */,
+				B7003A6F25D2C8E1001DAE81 /* SFML */,
+				B7003A6B25D2C883001DAE81 /* SFML.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B7213E0525D07D1B00F71102 = {
+			isa = PBXGroup;
+			children = (
+				B7213E1025D07D1B00F71102 /* GraphicAPI */,
+				B7213E0F25D07D1B00F71102 /* Products */,
+				B7003A5425D0D993001DAE81 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B7213E0F25D07D1B00F71102 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B7213E0E25D07D1B00F71102 /* GraphicAPI */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B7213E1025D07D1B00F71102 /* GraphicAPI */ = {
+			isa = PBXGroup;
+			children = (
+				B7003A5C25D0E7AD001DAE81 /* GraphicAPI.entitlements */,
+				B7213E1125D07D1B00F71102 /* main.cpp */,
+				B7003A8825D336EA001DAE81 /* Canvas.hpp */,
+				B7003A8A25D38292001DAE81 /* Canvas.cpp */,
+				B7003A9125D487AD001DAE81 /* Scene.hpp */,
+				B7003A8D25D48761001DAE81 /* Scene.cpp */,
+				B7003A9325D62540001DAE81 /* VectorUtil.cpp */,
+				B7003A9625D62598001DAE81 /* VectorUtil.hpp */,
+				B7003A9925D7438A001DAE81 /* Renderer.hpp */,
+			);
+			path = GraphicAPI;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B7213E0D25D07D1B00F71102 /* GraphicAPI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7213E1525D07D1B00F71102 /* Build configuration list for PBXNativeTarget "GraphicAPI" */;
+			buildPhases = (
+				B7213E0A25D07D1B00F71102 /* Sources */,
+				B7213E0B25D07D1B00F71102 /* Frameworks */,
+				B7213E0C25D07D1B00F71102 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GraphicAPI;
+			productName = GraphicAPI;
+			productReference = B7213E0E25D07D1B00F71102 /* GraphicAPI */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B7213E0625D07D1B00F71102 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					B7213E0D25D07D1B00F71102 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+				};
+			};
+			buildConfigurationList = B7213E0925D07D1B00F71102 /* Build configuration list for PBXProject "GraphicAPI" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B7213E0525D07D1B00F71102;
+			productRefGroup = B7213E0F25D07D1B00F71102 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B7213E0D25D07D1B00F71102 /* GraphicAPI */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B7213E0A25D07D1B00F71102 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7003A9425D62540001DAE81 /* VectorUtil.cpp in Sources */,
+				B7003A8F25D48761001DAE81 /* Scene.cpp in Sources */,
+				B7213E1225D07D1B00F71102 /* main.cpp in Sources */,
+				B7003A8B25D38292001DAE81 /* Canvas.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B7213E1325D07D1B00F71102 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		B7213E1425D07D1B00F71102 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		B7213E1625D07D1B00F71102 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = GraphicAPI/GraphicAPI.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = XHSZ487M9N;
+				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL2.framework/Versions/A",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks/SFML.framework/Versions/2.5.1",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B7213E1725D07D1B00F71102 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = GraphicAPI/GraphicAPI.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = XHSZ487M9N;
+				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL2.framework/Versions/A",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks/SFML.framework/Versions/2.5.1",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B7213E0925D07D1B00F71102 /* Build configuration list for PBXProject "GraphicAPI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7213E1325D07D1B00F71102 /* Debug */,
+				B7213E1425D07D1B00F71102 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7213E1525D07D1B00F71102 /* Build configuration list for PBXNativeTarget "GraphicAPI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7213E1625D07D1B00F71102 /* Debug */,
+				B7213E1725D07D1B00F71102 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B7213E0625D07D1B00F71102 /* Project object */;
+}
