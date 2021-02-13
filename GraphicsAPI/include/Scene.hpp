@@ -37,14 +37,16 @@ class Scene
     Camera cam_;
     Sphere sphere_;
     
-    int Cw_, Ch_;
+    int CW_, CN_;  // The western and northern edge in pixels of the canvas
     
 public:
+    Scene() {};
     Scene(int Cw, int Ch);
     
     sf::Color computeValue(int ii, int jj);
     
 private:
+    // Convert from canvas pixel coordinates to float viewport coordinates
     void canvasToView(int Cx, int Cy, float& Vx, float& Vy);
     
     

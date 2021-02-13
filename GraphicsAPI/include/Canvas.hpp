@@ -21,6 +21,7 @@ class Canvas
     int Sw_, Sh_;  // number of pixels on the screen in each direction
     
 public:
+    Canvas() {};
     Canvas(int Sw, int Sh);
     
     void setPixel(int x, int y, sf::Color color);

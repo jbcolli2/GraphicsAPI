@@ -35,7 +35,7 @@ class Renderer
     
 public:
     // Constructor
-    Renderer();
+    Renderer(int Sw, int Sh);
     
     void pollEvents();
     
@@ -45,7 +45,7 @@ public:
     
     
     // Getters and Setters
-    sf::RenderWindow getWindowOpen();
+    bool getWindowOpen();
     
     
 };

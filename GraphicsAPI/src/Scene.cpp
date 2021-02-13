@@ -12,7 +12,7 @@
 
 
 
-Scene::Scene(int Cw, int Ch)
+Scene::Scene(int CW, int CN)
 {
     cam_.position = sf::Vector3f(0,0,0);
     cam_.view_depth = 1.0f;
@@ -24,8 +24,8 @@ Scene::Scene(int Cw, int Ch)
     sphere_.radius = 1.f;
     sphere_.color = sf::Color::Red;
     
-    Cw_ = Cw;
-    Ch_ = Ch;
+    CW_ = CW;
+    CN_ = CN;
 }
 
 
@@ -83,8 +83,8 @@ sf::Color Scene::computeValue(int ii, int jj)
 
 void Scene::canvasToView(int x, int y, float &Vx, float& Vy)
 {
-    Vx = x * (cam_.view_width/Cw_);
-    Vy = y * (cam_.view_height/Ch_);
+    Vx = x * (cam_.view_width/(2*CW_));
+    Vy = y * (cam_.view_height/(2*CN_));
 }
 
 
