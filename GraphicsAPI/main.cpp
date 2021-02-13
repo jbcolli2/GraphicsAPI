@@ -16,6 +16,8 @@
 
 int main(int argc, const char * argv[]) {
     
+    Renderer renderer;
+    
     constexpr int Sw = 801;
     constexpr int Sh = 801;
     sf::RenderWindow window(sf::VideoMode(Sw, Sh), "My window");
