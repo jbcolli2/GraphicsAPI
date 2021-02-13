@@ -73,9 +73,7 @@ fastlane/test_output
 
 ### Xcode Patch ###
 *.xcodeproj/*
-!*.xcodeproj/project.pbxproj
-!*.xcodeproj/xcshareddata/
-!*.xcworkspace/contents.xcworkspacedata
 /*.gcno
+project.pbxproj
 
 # End of https://www.gitignore.io/api/swift,xcode

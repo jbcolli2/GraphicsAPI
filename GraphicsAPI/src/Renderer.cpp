@@ -17,7 +17,8 @@
  \parameters: Sw - width in pixels of the window
             Sh - height in pixels of the window
  */
-Renderer::Renderer(int Sw, int Sh)
+Renderer::Renderer(int Sw, int Sh) : window_(sf::VideoMode(Sw, Sh), "Graphics Renderer"),
+                                    canvas_(Sw,Sh), scene_(Sw/2, Sh/2)
 {
     Sw_ = Sw;
     Sh_ = Sh;
@@ -25,8 +26,6 @@ Renderer::Renderer(int Sw, int Sh)
     CW_ = Sw/2;
     CN_ = Sh/2;
     CS_ = -Sh/2;
-    
-    sf::RenderWindow window(sf::VideoMode(Sw_, Sh_), "Graphics Renderer");
     
     
 }
@@ -63,7 +62,7 @@ void Renderer::renderScene()
     {
         for (int jj = CS_; jj < CN_; ++jj)
         {
-            sf::Color value = canvas_.computeValue(ii,jj);
+            sf::Color value = scene_.computeValue(ii,jj);
 
             canvas_.setPixel(ii, jj, value);
         }
