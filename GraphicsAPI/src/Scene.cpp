@@ -22,7 +22,7 @@ Scene::Scene(int CW, int CN)
     
     sphere_.position = sf::Vector3f(0, 0, 3);
     sphere_.radius = 1.f;
-    sphere_.color = sf::Color::Red;
+    sphere_.color = sf::Color::Green;
     
     CW_ = CW;
     CN_ = CN;
@@ -31,52 +31,53 @@ Scene::Scene(int CW, int CN)
 
 
 
+float Scene::intersectWithSphere(const sf::Vector3f& viewP, const sf::Vector3f& camP, const Sphere& sphere)
+{
+    sf::Vector3f dir_vector = viewP - camP;
+    sf::Vector3f viewP_minus_sphere = viewP - sphere.position;
+    
+    // Quadratic coefficients
+    float a = Dot(dir_vector, dir_vector);
+    float b = 2*Dot(viewP_minus_sphere, dir_vector);
+    float c = Dot(viewP_minus_sphere, viewP_minus_sphere) - sphere.radius*sphere.radius;
+    
+    float discriminant = b*b - 4*a*c;
+    if(discriminant <= 0)
+    {
+        return -1;
+    }
+    
+    float denom = 0.5*(1/a);
+    float sqrt_disc = std::sqrt(discriminant);
+    
+    return std::min(denom*(-b + sqrt_disc), denom*(-b- sqrt_disc));
+}
+
+
 
 
 
 sf::Color Scene::computeValue(int ii, int jj)
 {
     float x, y;
-    float r = .25;
     canvasToView(ii, jj, x, y);
     
-    sf::Vector3f d = sf::Vector3f(x,y,cam_.Vz) - cam_.position;
-    sf::Vector3f sphereToCamera = cam_.position - sphere_.position;
+    // Compute interesection point $t$
+    // Parameters: P = <x,y>, cam_.position, sphere data
+    float t = intersectWithSphere(sf::Vector3f(x,y,cam_.view_depth), cam_.position, sphere_);
     
-    float a = Dot(d,d);
-    float b = 2*Dot(sphereToCamera, d);
-    float c = Dot(sphereToCamera, sphereToCamera) - sphere_.radius*sphere_.radius;
-    
-    float discriminant = b*b - 4*a*c;
-    if(discriminant <= 0)
-        return sf::Color::Black;
-    
-    
-    float sol1 = (1/(2*a))*(-b + std::sqrt(discriminant));
-    float sol2 = (1/(2*a))*(-b - std::sqrt(discriminant));
-    
-    float t = std::min(sol1, sol2);
-//    std::cout << "t = " << t << std::endl;
-//    std::cout << "d = " << d.x << ", " << d.y << ", " << d.z << std::endl;
-//    std::cout << "CO = " << sphereToCamera.x << ", " << sphereToCamera.y << ", " << sphereToCamera.z << std::endl;
+        
 
-    if(t > 1)
+    if(t >=0)
     {
         return sphere_.color;
     }
     else
     {
-        return sf::Color::Black;
+        return back_color_;
     }
     
-//    if(x*x + y*y < r*r)
-//    {
-//        return sf::Color::Blue;
-//    }
-//    else
-//    {
-//        return sf::Color::Green;
-//    }
+
 }
 
 

@@ -38,6 +38,7 @@ class Scene
     Sphere sphere_;
     
     int CW_, CN_;  // The western and northern edge in pixels of the canvas
+    sf::Color back_color_ = sf::Color::Black;
     
 public:
     Scene() {};
@@ -48,6 +49,9 @@ public:
 private:
     // Convert from canvas pixel coordinates to float viewport coordinates
     void canvasToView(int Cx, int Cy, float& Vx, float& Vy);
+    
+    // Compute intersection of ray with sphere
+    float intersectWithSphere(const sf::Vector3f& viewP, const sf::Vector3f& camP, const Sphere& sphere);
     
     
     
