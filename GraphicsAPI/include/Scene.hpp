@@ -29,13 +29,20 @@ struct Sphere
     sf::Vector3f position;
     float radius;
     sf::Color color;
+    
+    Sphere(const sf::Vector3f& position, float radius, const sf::Color& color)
+    {
+        this->position = position;
+        this->radius = radius;
+        this->color = color;
+    }
 };
 
 
 class Scene
 {
     Camera cam_;
-    Sphere sphere_;
+    std::vector<Sphere> spheres_;
     
     int CW_, CN_;  // The western and northern edge in pixels of the canvas
     sf::Color back_color_ = sf::Color::Black;
@@ -51,7 +58,7 @@ private:
     void canvasToView(int Cx, int Cy, float& Vx, float& Vy);
     
     // Compute intersection of ray with sphere
-    float intersectWithSphere(const sf::Vector3f& viewP, const sf::Vector3f& camP, const Sphere& sphere);
+    float intersectWithSphere(const sf::Vector3f& viewP, const Sphere& sphere);
     
     
     

@@ -20,9 +20,13 @@ Scene::Scene(int CW, int CN)
     cam_.view_height = 1.0f;
     cam_.Vz = cam_.position.z + cam_.view_depth;
     
-    sphere_.position = sf::Vector3f(0, 0, 3);
-    sphere_.radius = 1.f;
-    sphere_.color = sf::Color::Green;
+    spheres_.push_back(Sphere(sf::Vector3f(0,0,3), 0.25, sf::Color::Green));
+    spheres_.push_back(Sphere(sf::Vector3f(-1,0,5), 1.f, sf::Color::Yellow));
+    spheres_.push_back(Sphere(sf::Vector3f(1,-.5,4), 0.5, sf::Color::Red));
+    
+//    sphere_.position = sf::Vector3f(0, 0, 3);
+//    sphere_.radius = 1.f;
+//    sphere_.color = sf::Color::Green;
     
     CW_ = CW;
     CN_ = CN;
@@ -31,9 +35,9 @@ Scene::Scene(int CW, int CN)
 
 
 
-float Scene::intersectWithSphere(const sf::Vector3f& viewP, const sf::Vector3f& camP, const Sphere& sphere)
+float Scene::intersectWithSphere(const sf::Vector3f& viewP, const Sphere& sphere)
 {
-    sf::Vector3f dir_vector = viewP - camP;
+    sf::Vector3f dir_vector = viewP - cam_.position;
     sf::Vector3f viewP_minus_sphere = viewP - sphere.position;
     
     // Quadratic coefficients
@@ -57,20 +61,38 @@ float Scene::intersectWithSphere(const sf::Vector3f& viewP, const sf::Vector3f& 
 
 
 
-sf::Color Scene::computeValue(int ii, int jj)
+
+
+
+
+
+sf::Color Scene::computeValue(int Cx, int Cy)
 {
     float x, y;
-    canvasToView(ii, jj, x, y);
+    canvasToView(Cx, Cy, x, y);
     
     // Compute interesection point $t$
     // Parameters: P = <x,y>, cam_.position, sphere data
-    float t = intersectWithSphere(sf::Vector3f(x,y,cam_.view_depth), cam_.position, sphere_);
+    float t;
+    float t_intersect = INFINITY;
+    int sphere_idx = -1;
+    for (int ii = 0; ii < spheres_.size(); ++ii)
+    {
+        t = intersectWithSphere(sf::Vector3f(x,y,cam_.view_depth), spheres_[ii]);
+        if(t >= 0 && t < t_intersect)
+        {
+            t_intersect = t;
+            sphere_idx = ii;
+        }
+            
+    }
+    
     
         
 
-    if(t >=0)
+    if(sphere_idx >= 0)
     {
-        return sphere_.color;
+        return spheres_[sphere_idx].color;
     }
     else
     {
