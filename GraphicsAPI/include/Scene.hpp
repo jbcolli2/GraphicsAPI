@@ -24,6 +24,26 @@ struct Camera
 };
 
 
+
+
+struct PointLight
+{
+    sf::Vector3f position;
+    sf::Vector3f direction;
+    float intensity;
+};
+
+
+struct DirLight
+{
+    sf::Vector3f direction;
+    float intensity;
+};
+
+
+
+
+
 struct Sphere
 {
     sf::Vector3f position;
@@ -41,7 +61,14 @@ struct Sphere
 
 class Scene
 {
+    // Camera and lighting
     Camera cam_;
+    PointLight pointLight_;
+    DirLight dirLight_;
+    float ambientLight_;
+    
+    
+    // Objects in the scene
     std::vector<Sphere> spheres_;
     
     int CW_, CN_;  // The western and northern edge in pixels of the canvas
@@ -58,7 +85,10 @@ private:
     void canvasToView(int Cx, int Cy, float& Vx, float& Vy);
     
     // Compute intersection of ray with sphere
-    float intersectWithSphere(const sf::Vector3f& viewP, const Sphere& sphere);
+    float intersectWithSphere(const sf::Vector3f& viewP, const Sphere& sphere, sf::Vector3f& sphereP);
+    
+    // Compute the light intensity given a point and a normal
+    float computeLights(const sf::Vector3f& P, const sf::Vector3f& N);
     
     
     
