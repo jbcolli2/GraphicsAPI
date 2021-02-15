@@ -32,9 +32,9 @@ Scene::Scene(int CW, int CN)
     
     
     
-    spheres_.push_back(Sphere(sf::Vector3f(0,0,3), 0.25, sf::Color::Green));
-    spheres_.push_back(Sphere(sf::Vector3f(-1,0,5), 1.f, sf::Color::Yellow));
-    spheres_.push_back(Sphere(sf::Vector3f(1,-.5,4), 0.5, sf::Color::Red));
+    spheres_.push_back(Sphere(sf::Vector3f(0,0,3), 0.25, sf::Color::Green, 1));
+    spheres_.push_back(Sphere(sf::Vector3f(-1,0,5), 1.f, sf::Color::Yellow, -1));
+    spheres_.push_back(Sphere(sf::Vector3f(1,-.5,4), 0.5, sf::Color::Red, 200));
     
     
     CW_ = CW;
@@ -84,6 +84,7 @@ float Scene::computeLights(const sf::Vector3f& P, const sf::Vector3f& N)
     {
         I += pointLight_.intensity*angle/(Norm(N)*Norm(ptLightD));
     }
+    
     
     
     // Direcitonal Light

@@ -49,12 +49,14 @@ struct Sphere
     sf::Vector3f position;
     float radius;
     sf::Color color;
+    int specularity;
     
-    Sphere(const sf::Vector3f& position, float radius, const sf::Color& color)
+    Sphere(const sf::Vector3f& position, float radius, const sf::Color& color, int specularity)
     {
         this->position = position;
         this->radius = radius;
         this->color = color;
+        this->specularity = specularity;
     }
 };
 
