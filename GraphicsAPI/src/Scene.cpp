@@ -20,21 +20,20 @@ Scene::Scene(int CW, int CN)
     cam_.view_height = 1.0f;
     cam_.Vz = cam_.position.z + cam_.view_depth;
     
-    pointLight_.position = sf::Vector3f(4.0, -10.0, 4.0);
-    pointLight_.direction = sf::Vector3f(-1,-1,0);
-    pointLight_.intensity = .8;
+    pointLight_.position = sf::Vector3f(0, 5.0, 2.0);
+    pointLight_.intensity = .5;
     
-    dirLight_.direction = sf::Vector3f(0,0,1);
-    dirLight_.intensity = .1;
+    dirLight_.direction = sf::Vector3f(1,1, .25);
+    dirLight_.intensity = 0.4;
     
-    ambientLight_ = .1;
-    
+    ambientLight_ = .3;
     
     
     
-    spheres_.push_back(Sphere(sf::Vector3f(0,0,3), 0.25, sf::Color::Green, 1));
-    spheres_.push_back(Sphere(sf::Vector3f(-1,0,5), 1.f, sf::Color::Yellow, -1));
-    spheres_.push_back(Sphere(sf::Vector3f(1,-.5,4), 0.5, sf::Color::Red, 200));
+    
+    spheres_.push_back(Sphere(sf::Vector3f(0,0,3), 0.5, sf::Color(255, 160, 255), 20));
+    spheres_.push_back(Sphere(sf::Vector3f(-2,0,6), 1.0, sf::Color::Red, 3));
+    spheres_.push_back(Sphere(sf::Vector3f(1,1.2,4), .7, sf::Color::Blue, 2));
     
     
     CW_ = CW;
@@ -73,26 +72,53 @@ float Scene::intersectWithSphere(const sf::Vector3f& viewP, const Sphere& sphere
 
 
 
-float Scene::computeLights(const sf::Vector3f& P, const sf::Vector3f& N)
+float Scene::computeLights(const sf::Vector3f& P, const sf::Vector3f& N, const sf::Vector3f& viewP, int specularity)
 {
     float I = ambientLight_;
     
     // Point light
     sf::Vector3f ptLightD = P - pointLight_.position;
-    float angle = Dot(ptLightD, N);
+    float angle = -Dot(ptLightD, N);
     if(angle >= 0)
     {
         I += pointLight_.intensity*angle/(Norm(N)*Norm(ptLightD));
     }
     
+    if(specularity >= 0)
+    {
+        sf::Vector3f R = 2.f*N*Dot(N,ptLightD) - ptLightD;
+        R = -R;
+        sf::Vector3f V = viewP - P;
+        angle = Dot(R,V);
+        if(angle >= 0)
+        {
+             I += pointLight_.intensity * std::pow(angle/(Norm(R)*Norm(V)), specularity);
+        }
+    }
+    
+    
+    
     
     
     // Direcitonal Light
-    angle = Dot(dirLight_.direction, N);
+    angle = -Dot(dirLight_.direction, N);
     if(angle >= 0)
     {
         I += dirLight_.intensity*angle/(Norm(N)*Norm(dirLight_.direction));
     }
+    
+    if(specularity >= 0)
+    {
+        sf::Vector3f R = 2.f*N*Dot(N,dirLight_.direction) - dirLight_.direction;
+        R = -R;
+        sf::Vector3f V = viewP - P;
+        angle = Dot(R,V);
+        if(angle >= 0)
+        {
+            I += dirLight_.intensity * std::pow(angle/(Norm(R)*Norm(V)), specularity);
+        }
+    }
+
     
     return I;
 }
@@ -128,13 +154,13 @@ sf::Color Scene::computeValue(int Cx, int Cy)
 
     if(sphere_idx >= 0)
     {
-        sf::Vector3f N = spheres_[sphere_idx].position - sphere_intersect;
+        sf::Vector3f N = sphere_intersect - spheres_[sphere_idx].position;
         N = N/Norm(N);
-        float I = computeLights(sphere_intersect, N);
+        float I = computeLights(sphere_intersect, N, sf::Vector3f(x,y,cam_.view_depth), spheres_[sphere_idx].specularity);
         sf::Color value = spheres_[sphere_idx].color;
-        value.r = sf::Uint8(value.r * I);
-        value.g = sf::Uint8(value.g * I);
-        value.b = sf::Uint8(value.b * I);
+        value.r = sf::Uint8(std::min(value.r * I, 255.f));
+        value.g = sf::Uint8(std::min(value.g * I, 255.f));
+        value.b = sf::Uint8(std::min(value.b * I, 255.f));
         return value;
     }
     else
