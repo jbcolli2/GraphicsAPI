@@ -90,7 +90,7 @@ private:
     float intersectWithSphere(const sf::Vector3f& viewP, const Sphere& sphere, sf::Vector3f& sphereP);
     
     // Compute the light intensity given a point and a normal
-    float computeLights(const sf::Vector3f& P, const sf::Vector3f& N, const sf::Vector3f& viewP, int specularity);
+    float computeLights(const sf::Vector3f& P, const sf::Vector3f& N, int specularity);
     
     
     

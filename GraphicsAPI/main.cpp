@@ -16,8 +16,8 @@
 
 int main(int argc, const char * argv[]) {
     
-    int Sw = 1201;
-    int Sh = 1201;
+    int Sw = 401;
+    int Sh = 401;
     
     bool rendered = false;
     
