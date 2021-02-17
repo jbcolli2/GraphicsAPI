@@ -6,6 +6,7 @@
 //
 
 #include <stdio.h>
+#include <thread>
 
 #include "Renderer.hpp"
 
@@ -49,6 +50,15 @@ void Renderer::pollEvents()
 }
 
 
+void Renderer::f(int ii)
+{
+    for (int jj = CS_; jj < CN_; ++jj)
+    {
+        sf::Color value = scene_.computeValue(ii,jj);
+        canvas_.setPixel(ii, jj, value);
+    }
+    
+}
 
 
 
@@ -57,15 +67,22 @@ void Renderer::pollEvents()
  */
 void Renderer::renderScene()
 {
+    std::vector<std::thread> threads;
     // Fill in the screen pixels
     for (int ii = CE_; ii < CW_; ++ii)
     {
-        for (int jj = CS_; jj < CN_; ++jj)
-        {
-            sf::Color value = scene_.computeValue(ii,jj);
-
-            canvas_.setPixel(ii, jj, value);
-        }
+//        for (int jj = CS_; jj < CN_; ++jj)
+//        {
+//            sf::Color value = scene_.computeValue(ii,jj);
+//
+//            canvas_.setPixel(ii, jj, value);
+            threads.push_back(std::thread(&Renderer::f,this, ii));
+//        }
+    }
+    
+    for(auto& th : threads)
+    {
+        th.join();
     }
     
     

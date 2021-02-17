@@ -16,8 +16,8 @@
 
 int main(int argc, const char * argv[]) {
     
-    int Sw = 401;
-    int Sh = 401;
+    int Sw = 1201;
+    int Sh = 1201;
     
     bool rendered = false;
     
@@ -35,6 +35,7 @@ int main(int argc, const char * argv[]) {
         // Only render the scene once, not every 1/60 of a second
         if(!rendered)
         {
+            
             auto start = std::chrono::steady_clock::now();
             
             renderer.renderScene();
