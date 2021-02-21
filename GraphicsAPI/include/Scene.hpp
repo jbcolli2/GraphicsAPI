@@ -44,21 +44,52 @@ struct DirLight
 
 
 
-struct Sphere
-{
-    sf::Vector3f position;
-    float radius;
-    sf::Color color;
-    int specularity;
-    
-    Sphere(const sf::Vector3f& position, float radius, const sf::Color& color, int specularity)
-    {
-        this->position = position;
-        this->radius = radius;
-        this->color = color;
-        this->specularity = specularity;
-    }
-};
+//struct Sphere
+//{
+//    sf::Vector3f position;
+//    float radius;
+//    sf::Color color;
+//    int specularity;
+//    
+//    Sphere(const sf::Vector3f& position, float radius, const sf::Color& color, int specularity)
+//    {
+//        this->position = position;
+//        this->radius = radius;
+//        this->color = color;
+//        this->specularity = specularity;
+//    }
+//};
+//
+//
+//
+//
+//struct Plane
+//{
+//    sf::Vector3f normal;
+//    std::vector<sf::Vector3f> vertices;
+//    sf::Color color;
+//    float min_x, max_x;
+//    float min_y, max_y;
+//    float min_z, max_z;
+//    int specularity;
+//    
+//    sf::Vector3f vert_minus_cam;
+//    
+//    Plane() {};
+//    Plane(const std::vector<sf::Vector3f>& verts, sf::Color color, int specularity)
+//    {
+//        vertices = verts;
+//        this-> color = color;
+//        this->specularity = specularity;
+//        normal = Cross(vertices[1] - vertices[0], vertices[3] - vertices[0]);
+//        min_x = std::min({vertices[0].x, vertices[1].x, vertices[2].x, vertices[3].x});
+//        min_y = std::min({vertices[0].y, vertices[1].y, vertices[2].y, vertices[3].y});
+//        min_z = std::min({vertices[0].z, vertices[1].z, vertices[2].z, vertices[3].z});
+//        max_x = std::max({vertices[0].x, vertices[1].x, vertices[2].x, vertices[3].x});
+//        max_y = std::max({vertices[0].y, vertices[1].y, vertices[2].y, vertices[3].y});
+//        max_z = std::max({vertices[0].z, vertices[1].z, vertices[2].z, vertices[3].z});
+//   }
+//};
 
 
 class Scene
@@ -71,6 +102,7 @@ class Scene
     
     
     // Objects in the scene
+    Plane plane;
     std::vector<Sphere> spheres_;
     
     int CW_, CN_;  // The western and northern edge in pixels of the canvas
@@ -85,6 +117,9 @@ public:
 private:
     // Convert from canvas pixel coordinates to float viewport coordinates
     void canvasToView(int Cx, int Cy, float& Vx, float& Vy);
+    
+    // Compute intersection of ray with plane
+    float intersectWithPlane(const sf::Vector3f& D, const Plane& plane, sf::Vector3f& P);
     
     // Compute intersection of ray with sphere
     float intersectWithSphere(const sf::Vector3f& viewP, const Sphere& sphere, sf::Vector3f& sphereP);

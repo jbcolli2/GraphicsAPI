@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cmath>
 
+#include "Shape.hpp"
 #include "Scene.hpp"
 
 
@@ -20,26 +21,55 @@ Scene::Scene(int CW, int CN)
     cam_.view_height = 1.0f;
     cam_.Vz = cam_.position.z + cam_.view_depth;
     
-    pointLight_.position = sf::Vector3f(0, 5.0, 2.0);
-    pointLight_.intensity = .5;
+    pointLight_.position = sf::Vector3f(0, 2.0, 2.0);
+    pointLight_.intensity = 0.3;
     
-    dirLight_.direction = sf::Vector3f(1,-.4, .25);
-    dirLight_.intensity = 0.4;
+    dirLight_.direction = sf::Vector3f(0,-1, -1.0);
+    dirLight_.intensity = 0.3;
     
-    ambientLight_ = .3;
-    
-    
+    ambientLight_ = .4;
     
     
-    spheres_.push_back(Sphere(sf::Vector3f(0,0,3), 0.5, sf::Color(255, 0, 100), 200));
-    spheres_.push_back(Sphere(sf::Vector3f(-2,0,6), 1.0, sf::Color::Red, 300));
-    spheres_.push_back(Sphere(sf::Vector3f(1,1.2,4), .7, sf::Color::Blue, -1));
+    
+    
+    std::vector<sf::Vector3f> plane_verts;
+    plane_verts.push_back(sf::Vector3f(-4, -.5, 0.0));
+    plane_verts.push_back(sf::Vector3f(4, -.5, 0.0));
+    plane_verts.push_back(sf::Vector3f(4, 0, 10.0));
+    plane_verts.push_back(sf::Vector3f(-4, 0, 10.0));
+    
+    plane = Plane(plane_verts, sf::Color::Yellow, 40);
+//    plane.vert_minus_cam = plane.vertices[0] - cam_.position;
+    
+    
+//    spheres_.push_back(Sphere(sf::Vector3f(0,0,3), 0.5, sf::Color(255, 0, 100), 200));
+//    spheres_.push_back(Sphere(sf::Vector3f(-2,0,6), 1.0, sf::Color::Red, 3));
+//    spheres_.push_back(Sphere(sf::Vector3f(1,1.2,4), .7, sf::Color::Blue, -1));
     
     
     CW_ = CW;
     CN_ = CN;
 }
 
+
+
+float Scene::intersectWithPlane(const sf::Vector3f& D, const Plane& plane, sf::Vector3f& P)
+{
+    float t = Dot(plane.normal, plane.vert_minus_cam)/Dot(plane.normal, D);
+    
+    P = cam_.position + t*D;
+    
+    if(plane.min_x <= P.x && P.x <= plane.max_x &&
+       plane.min_y <= P.y && P.y <= plane.max_y &&
+       plane.min_z <= P.z && P.z <= plane.max_z)
+    {
+        return t;
+    }
+    else
+    {
+        return -1;
+    }
+}
 
 
 
@@ -129,6 +159,7 @@ sf::Color Scene::computeValue(int Cx, int Cy)
 {
     float x, y;
     canvasToView(Cx, Cy, x, y);
+    bool draw_plane = false;
     
     // Compute interesection point $t$
     // Parameters: P = <x,y>, cam_.position, sphere data
@@ -147,8 +178,25 @@ sf::Color Scene::computeValue(int Cx, int Cy)
         }
             
     }
+    t = intersectWithPlane(sf::Vector3f(x,y,cam_.view_depth) - cam_.position, plane, sphereP);
+    if(t > 0 && t < t_intersect)
+    {
+        draw_plane = true;
+        t_intersect = t;
+        sphere_intersect = sphereP;
+    }
     
-    
+    if(draw_plane)
+    {
+        sf::Vector3f N = plane.normal;
+        N = -N/Norm(N);
+        float I = computeLights(sphere_intersect, N, plane.specularity);
+        sf::Color value = plane.color;
+        value.r = sf::Uint8(std::min(value.r * I, 255.f));
+        value.g = sf::Uint8(std::min(value.g * I, 255.f));
+        value.b = sf::Uint8(std::min(value.b * I, 255.f));
+        return value;
+    }
         
 
     if(sphere_idx >= 0)
