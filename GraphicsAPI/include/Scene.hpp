@@ -12,6 +12,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Shape.hpp"
 #include "VectorUtil.hpp"
 
 struct Camera
@@ -102,27 +103,31 @@ class Scene
     
     
     // Objects in the scene
-    Plane plane;
-    std::vector<Sphere> spheres_;
+    std::vector< std::unique_ptr<Shape> > objects_;
     
     int CW_, CN_;  // The western and northern edge in pixels of the canvas
     sf::Color back_color_ = sf::Color::Black;
     
 public:
-    Scene() {};
     Scene(int Cw, int Ch);
     
     sf::Color computeValue(int ii, int jj);
     
 private:
+    // Create the objects in the scene
+    void makeObjects();
+    
     // Convert from canvas pixel coordinates to float viewport coordinates
     void canvasToView(int Cx, int Cy, float& Vx, float& Vy);
     
+    // Find nearest intersection btwn ray and all objects in scene
+    int nearest_intersection(const sf::Vector3f& P, const sf::Vector3f& D, float tmin, float tmax, sf::Vector3f& obj_P);
+    
     // Compute intersection of ray with plane
-    float intersectWithPlane(const sf::Vector3f& D, const Plane& plane, sf::Vector3f& P);
+//    float intersectWithPlane(const sf::Vector3f& D, const Plane& plane, sf::Vector3f& P);
     
     // Compute intersection of ray with sphere
-    float intersectWithSphere(const sf::Vector3f& viewP, const Sphere& sphere, sf::Vector3f& sphereP);
+//    float intersectWithSphere(const sf::Vector3f& viewP, const Sphere& sphere, sf::Vector3f& sphereP);
     
     // Compute the light intensity given a point and a normal
     float computeLights(const sf::Vector3f& P, const sf::Vector3f& N, int specularity);

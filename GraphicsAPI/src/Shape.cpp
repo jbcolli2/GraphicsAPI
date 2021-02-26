@@ -43,7 +43,7 @@ Plane::Plane(const std::vector<sf::Vector3f>& verts, const sf::Color& color, int
 
 
 
-/**         intersect
+/**         Plane::intersect
  
     -brief: Determine where plane intersect given ray.  Computes both the $t$ value on the ray and the 3D point where interseciton happens.  If $t$ is outside of [tmin, tmax] then returns false.
  

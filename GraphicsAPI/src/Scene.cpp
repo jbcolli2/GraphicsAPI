@@ -32,20 +32,7 @@ Scene::Scene(int CW, int CN)
     
     
     
-    std::vector<sf::Vector3f> plane_verts;
-    plane_verts.push_back(sf::Vector3f(-4, -.5, 0.0));
-    plane_verts.push_back(sf::Vector3f(4, -.5, 0.0));
-    plane_verts.push_back(sf::Vector3f(4, 0, 10.0));
-    plane_verts.push_back(sf::Vector3f(-4, 0, 10.0));
-    
-    plane = Plane(plane_verts, sf::Color::Yellow, 40);
-//    plane.vert_minus_cam = plane.vertices[0] - cam_.position;
-    
-    
-//    spheres_.push_back(Sphere(sf::Vector3f(0,0,3), 0.5, sf::Color(255, 0, 100), 200));
-//    spheres_.push_back(Sphere(sf::Vector3f(-2,0,6), 1.0, sf::Color::Red, 3));
-//    spheres_.push_back(Sphere(sf::Vector3f(1,1.2,4), .7, sf::Color::Blue, -1));
-    
+    makeObjects();
     
     CW_ = CW;
     CN_ = CN;
@@ -53,51 +40,57 @@ Scene::Scene(int CW, int CN)
 
 
 
-float Scene::intersectWithPlane(const sf::Vector3f& D, const Plane& plane, sf::Vector3f& P)
+/**        Scene::makeObjects()
+ - brief: Creates the objects in the scene.  Just nice to have this in it's own function in case I want to make different scenes for testing
+ 
+ */
+
+void Scene::makeObjects()
 {
-    float t = Dot(plane.normal, plane.vert_minus_cam)/Dot(plane.normal, D);
+    std::vector<sf::Vector3f> plane_verts;
+    plane_verts.push_back(sf::Vector3f(-4, -.5, 0.0));
+    plane_verts.push_back(sf::Vector3f(-4, -.45, 10.0));
+    plane_verts.push_back(sf::Vector3f(4, -.45, 10.0));
+    plane_verts.push_back(sf::Vector3f(4, -.5, 0.0));
+    Plane plane(plane_verts, sf::Color::Yellow, 0);
     
-    P = cam_.position + t*D;
-    
-    if(plane.min_x <= P.x && P.x <= plane.max_x &&
-       plane.min_y <= P.y && P.y <= plane.max_y &&
-       plane.min_z <= P.z && P.z <= plane.max_z)
-    {
-        return t;
-    }
-    else
-    {
-        return -1;
-    }
+    objects_.push_back(std::make_unique<Plane>(plane_verts, sf::Color::Yellow, 40));
+    objects_.push_back(std::make_unique<Sphere>(sf::Vector3f(0,-.5,7), 1, sf::Color::Red, 200));
+
 }
 
 
 
-float Scene::intersectWithSphere(const sf::Vector3f& viewP, const Sphere& sphere, sf::Vector3f& sphereP)
+/**     int nearest_intersection(P of ray, D of ray, tmin, tmax, out P on object)
+ - brief: Finds the nearest intersection between a given ray and all objects in the scene that lies in the interval [tmin, tmax]
+
+ - parameters: P = Point that defines the ray
+                D = Direction vector of the ray
+                tmin, tmax = defines the relavant interval for the t variable
+                obj_P = output the point of nearest intersection
+ 
+ - returns: index of the nearest object in the object vector
+ 
+ */
+
+int Scene::nearest_intersection(const sf::Vector3f& P, const sf::Vector3f& D, float tmin, float tmax, sf::Vector3f& obj_P)
 {
-    sf::Vector3f dir_vector = viewP - cam_.position;
-    sf::Vector3f viewP_minus_sphere = viewP - sphere.position;
+    float t_intersect = INFINITY;
+    int obj_idx = -1;
     
-    // Quadratic coefficients
-    float a = Dot(dir_vector, dir_vector);
-    float b = 2*Dot(viewP_minus_sphere, dir_vector);
-    float c = Dot(viewP_minus_sphere, viewP_minus_sphere) - sphere.radius*sphere.radius;
-    
-    float discriminant = b*b - 4*a*c;
-    if(discriminant <= 0)
+    float t;
+    for(int ii = 0; ii < objects_.size(); ++ii)
     {
-        return -1;
+        if(objects_[ii]->intersect(P, D, tmin, tmax, t, obj_P) && t < t_intersect)
+        {
+            obj_idx = ii;
+            t_intersect = t;
+        }
     }
     
-    float denom = 0.5*(1/a);
-    float sqrt_disc = std::sqrt(discriminant);
     
-    float t =  std::min(denom*(-b + sqrt_disc), denom*(-b- sqrt_disc));
-    sphereP = viewP + t*dir_vector;
-    
-    return t;
+    return obj_idx;
 }
-
 
 
 
@@ -159,52 +152,21 @@ sf::Color Scene::computeValue(int Cx, int Cy)
 {
     float x, y;
     canvasToView(Cx, Cy, x, y);
-    bool draw_plane = false;
+    sf::Vector3f D = sf::Vector3f(x,y,cam_.view_depth) - cam_.position;
     
-    // Compute interesection point $t$
-    // Parameters: P = <x,y>, cam_.position, sphere data
-    float t;
-    float t_intersect = INFINITY;
-    int sphere_idx = -1;
-    sf::Vector3f sphere_intersect, sphereP;
-    for (int ii = 0; ii < spheres_.size(); ++ii)
-    {
-        t = intersectWithSphere(sf::Vector3f(x,y,cam_.view_depth), spheres_[ii], sphereP);
-        if(t >= 0 && t < t_intersect)
-        {
-            t_intersect = t;
-            sphere_idx = ii;
-            sphere_intersect = sphereP;
-        }
-            
-    }
-    t = intersectWithPlane(sf::Vector3f(x,y,cam_.view_depth) - cam_.position, plane, sphereP);
-    if(t > 0 && t < t_intersect)
-    {
-        draw_plane = true;
-        t_intersect = t;
-        sphere_intersect = sphereP;
-    }
     
-    if(draw_plane)
+    sf::Vector3f obj_P{0,0,0};
+    
+    // Find the intersection of camera ray with the nearest object
+    int obj_idx = nearest_intersection(cam_.position, D, 1, INFINITY, obj_P);
+    
+    
+    // Compute the value at that intersection
+    if(obj_idx >= 0)
     {
-        sf::Vector3f N = plane.normal;
-        N = -N/Norm(N);
-        float I = computeLights(sphere_intersect, N, plane.specularity);
-        sf::Color value = plane.color;
-        value.r = sf::Uint8(std::min(value.r * I, 255.f));
-        value.g = sf::Uint8(std::min(value.g * I, 255.f));
-        value.b = sf::Uint8(std::min(value.b * I, 255.f));
-        return value;
-    }
-        
-
-    if(sphere_idx >= 0)
-    {
-        sf::Vector3f N = sphere_intersect - spheres_[sphere_idx].position;
-        N = N/Norm(N);
-        float I = computeLights(sphere_intersect, N, spheres_[sphere_idx].specularity);
-        sf::Color value = spheres_[sphere_idx].color;
+        sf::Vector3f N = objects_[obj_idx]->normal(obj_P);
+        float I = computeLights(obj_P, N, objects_[obj_idx]->getSpecularity());
+        sf::Color value = objects_[obj_idx]->getColor();
         value.r = sf::Uint8(std::min(value.r * I, 255.f));
         value.g = sf::Uint8(std::min(value.g * I, 255.f));
         value.b = sf::Uint8(std::min(value.b * I, 255.f));
@@ -214,7 +176,7 @@ sf::Color Scene::computeValue(int Cx, int Cy)
     {
         return back_color_;
     }
-    
+
 
 }
 
