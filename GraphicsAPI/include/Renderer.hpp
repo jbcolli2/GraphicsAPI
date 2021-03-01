@@ -41,6 +41,8 @@ public:
     
     void renderScene();
     
+    void renderSceneThreaded();
+    
     void f(int ii);
     
     

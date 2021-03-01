@@ -149,7 +149,6 @@ bool Sphere::intersect(const sf::Vector3f& P, const sf::Vector3f& D,
     if(discriminant <= 0)
     {
         t = INFINITY;
-        intersectP.x = INFINITY;
         return false;
     }
     

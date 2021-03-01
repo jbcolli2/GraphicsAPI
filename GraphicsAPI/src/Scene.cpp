@@ -21,13 +21,13 @@ Scene::Scene(int CW, int CN)
     cam_.view_height = 1.0f;
     cam_.Vz = cam_.position.z + cam_.view_depth;
     
-    pointLight_.position = sf::Vector3f(0, 2.0, 2.0);
-    pointLight_.intensity = 0.3;
+    pointLight_.position = sf::Vector3f(0, 0.0, 0);
+    pointLight_.intensity = 0.0;
     
-    dirLight_.direction = sf::Vector3f(0,-1, -1.0);
-    dirLight_.intensity = 0.3;
+    dirLight_.direction = sf::Vector3f(0,0, 1.0);
+    dirLight_.intensity = 0.9;
     
-    ambientLight_ = .4;
+    ambientLight_ = 0.2;
     
     
     
@@ -48,14 +48,33 @@ Scene::Scene(int CW, int CN)
 void Scene::makeObjects()
 {
     std::vector<sf::Vector3f> plane_verts;
+    // Vertices for the floor
     plane_verts.push_back(sf::Vector3f(-4, -.5, 0.0));
     plane_verts.push_back(sf::Vector3f(-4, -.45, 10.0));
     plane_verts.push_back(sf::Vector3f(4, -.45, 10.0));
     plane_verts.push_back(sf::Vector3f(4, -.5, 0.0));
-    Plane plane(plane_verts, sf::Color::Yellow, 0);
     
     objects_.push_back(std::make_unique<Plane>(plane_verts, sf::Color::Yellow, 40));
-    objects_.push_back(std::make_unique<Sphere>(sf::Vector3f(0,-.5,7), 1, sf::Color::Red, 200));
+    objects_.push_back(std::make_unique<Sphere>(sf::Vector3f(-3,-.5,6), 1, sf::Color::Red, -1));
+    objects_.push_back(std::make_unique<Sphere>(sf::Vector3f(3,0,6), 1, sf::Color::Yellow, -1));
+    objects_.push_back(std::make_unique<Sphere>(sf::Vector3f(0,3,6), 1, sf::Color::Yellow, -1));
+
+//    objects_.push_back(std::make_unique<Sphere>(sf::Vector3f(-2,0,5), 1, sf::Color(50, 120,0), 2));
+
+    
+    // A wall facing the camera on the left
+    plane_verts[0] = sf::Vector3f(-4, 2, 5);
+    plane_verts[1] = sf::Vector3f(-1, 2, 5);
+    plane_verts[2] = sf::Vector3f(-1, -2, 5);
+    plane_verts[3] = sf::Vector3f(-4, -2, 5);
+//    objects_.push_back(std::make_unique<Plane>(plane_verts, sf::Color::Red, -1));
+
+    // A wall facing the camera on the right
+    plane_verts[0] = sf::Vector3f(1, 2, 5);
+    plane_verts[1] = sf::Vector3f(4, 2, 5);
+    plane_verts[2] = sf::Vector3f(4, -2, 5);
+    plane_verts[3] = sf::Vector3f(1, -2, 5);
+//    objects_.push_back(std::make_unique<Plane>(plane_verts, sf::Color::Red, -1));
 
 }
 
@@ -79,12 +98,18 @@ int Scene::nearest_intersection(const sf::Vector3f& P, const sf::Vector3f& D, fl
     int obj_idx = -1;
     
     float t;
+    sf::Vector3f temp_obj_P;
     for(int ii = 0; ii < objects_.size(); ++ii)
     {
-        if(objects_[ii]->intersect(P, D, tmin, tmax, t, obj_P) && t < t_intersect)
+        if(objects_[ii]->intersect(P, D, tmin, tmax, t, temp_obj_P))
         {
-            obj_idx = ii;
-            t_intersect = t;
+            if(t < t_intersect)
+            {
+                obj_idx = ii;
+                obj_P = temp_obj_P;
+                t_intersect = t;
+            }
+            
         }
     }
     

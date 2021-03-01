@@ -38,7 +38,7 @@ int main(int argc, const char * argv[]) {
             
             auto start = std::chrono::steady_clock::now();
             
-            renderer.renderScene();
+            renderer.renderSceneThreaded();
             rendered = true;
             
             auto end = std::chrono::steady_clock::now();
