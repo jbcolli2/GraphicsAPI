@@ -18,6 +18,7 @@ class Shape
 protected:
     sf::Color color_;
     int specularity_;
+    float reflectivity_;
     
     
 public:
@@ -27,6 +28,7 @@ public:
     virtual sf::Vector3f normal(const sf::Vector3f& P) = 0;
     sf::Color getColor() { return color_;};
     int getSpecularity() { return specularity_;};
+    float getReflectivity() {return reflectivity_;};
 };
 
 
@@ -42,7 +44,8 @@ class Plane : public Shape
     float min_z_, max_z_;
     
 public:
-    Plane(const std::vector<sf::Vector3f>& verts, const sf::Color& color = sf::Color::White, int specularity = -1);
+    Plane(const std::vector<sf::Vector3f>& verts, const sf::Color& color = sf::Color::White,
+          int specularity = -1, float reflectivity = 0);
     bool virtual intersect(const sf::Vector3f& P, const sf::Vector3f& D,
                            float tmin, float tmax,
                            float& t, sf::Vector3f& intersectP) override;
@@ -59,7 +62,8 @@ class Sphere : public Shape
     float radius_;
     
 public:
-    Sphere(const sf::Vector3f& center, float radius, const sf::Color& color = sf::Color::White, int specularity = -1);
+    Sphere(const sf::Vector3f& center, float radius, const sf::Color& color = sf::Color::White,
+           int specularity = -1, float reflectivity = 0);
     bool intersect(const sf::Vector3f& P, const sf::Vector3f& D,
                            float tmin, float tmax,
                            float& t, sf::Vector3f& intersectP) override;

@@ -23,11 +23,13 @@
  
 
 
-Plane::Plane(const std::vector<sf::Vector3f>& verts, const sf::Color& color, int specularity)
+Plane::Plane(const std::vector<sf::Vector3f>& verts, const sf::Color& color,
+             int specularity, float reflectivity)
 {
     vertices_ = verts;
     this-> color_ = color;
     this->specularity_ = specularity;
+    reflectivity_ = reflectivity;
     
     normal_ = Cross(vertices_[1] - vertices_[0], vertices_[3] - vertices_[0]);
     min_x_ = std::min({vertices_[0].x, vertices_[1].x, vertices_[2].x, vertices_[3].x});
@@ -74,6 +76,12 @@ bool Plane::intersect(const sf::Vector3f& P, const sf::Vector3f& D,
         return false;
     }
     
+    if(t <= tmin || t >= tmax)
+    {
+        t = INFINITY;
+        return false;
+    }
+    
     intersectP = P + t*D;
     
     if(min_x_ <= intersectP.x && intersectP.x <= max_x_ &&
@@ -110,12 +118,14 @@ bool Plane::intersect(const sf::Vector3f& P, const sf::Vector3f& D,
  
  -parameters: center and radius of the object.  Also color and specularity
  */
-Sphere::Sphere(const sf::Vector3f& center, float radius, const sf::Color& color, int specularity)
+Sphere::Sphere(const sf::Vector3f& center, float radius, const sf::Color& color,
+               int specularity, float reflectivity)
 {
     center_ = center;
     radius_ = radius;
     color_ = color;
     specularity_ = specularity;
+    reflectivity_ = reflectivity;
 
 }
 
@@ -156,6 +166,15 @@ bool Sphere::intersect(const sf::Vector3f& P, const sf::Vector3f& D,
     float sqrt_disc = std::sqrt(discriminant);
     
     t =  std::min(denom*(-b + sqrt_disc), denom*(-b- sqrt_disc));
-    intersectP = P + t*D;
-    return true;
+    if(tmin <= t && t <= tmax)
+    {
+        intersectP = P + t*D;
+        return true;
+    }
+    else
+    {
+        t = INFINITY;
+        return false;
+    }
+    
 }

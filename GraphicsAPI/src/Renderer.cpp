@@ -54,7 +54,7 @@ void Renderer::f(int ii)
 {
     for (int jj = CS_; jj < CN_; ++jj)
     {
-        sf::Color value = scene_.computeValue(ii,jj);
+        sf::Color value = scene_.computePixelValue(ii,jj);
         canvas_.setPixel(ii, jj, value);
     }
     
@@ -74,7 +74,7 @@ void Renderer::renderScene()
     {
         for (int jj = CS_; jj < CN_; ++jj)
         {
-            sf::Color value = scene_.computeValue(ii,jj);
+            sf::Color value = scene_.computePixelValue(ii,jj);
 
             canvas_.setPixel(ii, jj, value);
         }

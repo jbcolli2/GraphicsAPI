@@ -101,19 +101,26 @@ class Scene
     DirLight dirLight_;
     float ambientLight_;
     
+    float shadow_eps_ = 1e-7;
+    int maxReflectionDepth_ = 1;
+    
     
     // Objects in the scene
     std::vector< std::unique_ptr<Shape> > objects_;
     
     int CW_, CN_;  // The western and northern edge in pixels of the canvas
-    sf::Color back_color_ = sf::Color::Black;
+    sf::Color back_color_ = sf::Color(0, 0, 40);
     
 public:
     Scene(int Cw, int Ch);
     
-    sf::Color computeValue(int ii, int jj);
+    sf::Color computePixelValue(int ii, int jj);
     
 private:
+    // Trace a ray and return color value at nearest intersection
+    sf::Color traceRay(const sf::Vector3f& P, const sf::Vector3f& D, float tmin, float tmax,
+                       int reflectionDepth = 0);
+    
     // Create the objects in the scene
     void makeObjects();
     
@@ -123,14 +130,12 @@ private:
     // Find nearest intersection btwn ray and all objects in scene
     int nearest_intersection(const sf::Vector3f& P, const sf::Vector3f& D, float tmin, float tmax, sf::Vector3f& obj_P);
     
-    // Compute intersection of ray with plane
-//    float intersectWithPlane(const sf::Vector3f& D, const Plane& plane, sf::Vector3f& P);
-    
-    // Compute intersection of ray with sphere
-//    float intersectWithSphere(const sf::Vector3f& viewP, const Sphere& sphere, sf::Vector3f& sphereP);
     
     // Compute the light intensity given a point and a normal
     float computeLights(const sf::Vector3f& P, const sf::Vector3f& N, int specularity);
+    
+    // Compute reflection vector
+    sf::Vector3f reflection(const sf::Vector3f& L, const sf::Vector3f& N) {return 2.f*N*Dot(N,L) - L;};
     
     
     
