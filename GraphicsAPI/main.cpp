@@ -14,6 +14,8 @@
 
 #include <SFML/Graphics.hpp>
 
+using namespace rgl;
+
 int main(int argc, const char * argv[]) {
     
     int Sw = 1201;
@@ -21,15 +23,17 @@ int main(int argc, const char * argv[]) {
     
     bool rendered = false;
     
-    Renderer renderer(Sw, Sh);
+    std::shared_ptr<Window> window = std::make_shared<Window>(Sw, Sh);
+    std::shared_ptr<Scene> scene = std::make_shared<Scene>(Sw, Sh);
+    Renderer renderer(window, scene);
     
     // run the program as long as the window is open
-    while (renderer.getWindowOpen())
+    while (window->getWindowOpen())
     {
         
         
         // check all the window's events that were triggered since the last iteration of the loop
-        renderer.pollEvents();
+        window->pollEvents();
         
         
         // Only render the scene once, not every 1/60 of a second
@@ -38,7 +42,7 @@ int main(int argc, const char * argv[]) {
             
             auto start = std::chrono::steady_clock::now();
             
-            renderer.renderSceneThreaded();
+            renderer.renderScene();
             rendered = true;
             
             auto end = std::chrono::steady_clock::now();

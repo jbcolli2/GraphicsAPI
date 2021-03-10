@@ -9,25 +9,24 @@
 #define Renderer_h
 
 
-#include "Canvas.hpp"
+#include "Window.hpp"
 #include "Scene.hpp"
 
 #include <SFML/Graphics.hpp>
 
 
+namespace rgl {
+
 
 
 class Renderer
 {
-    int Sw_, Sh_;    // The width and height of the screen in pixels.
-    int CE_, CW_, CS_, CN_;  // The boundaries of the canvas, in pixels.
     
-    sf::RenderWindow window_;   // SFML Window object for rendering.  Initialized in the ctor
-    sf::Event event_;     // Event for closing the window
-    sf::Sprite sprite_;  // Sprite holding the rendered image.
+    std::shared_ptr<Window> window;   //  Window object for rendering.  Initialized in the ctor
+    std::shared_ptr<Scene> scene;
     
-    Canvas canvas_;
-    Scene scene_;
+    
+
     
     
     
@@ -35,22 +34,23 @@ class Renderer
     
 public:
     // Constructor
-    Renderer(int Sw, int Sh);
+    Renderer(std::shared_ptr<Window> window, std::shared_ptr<Scene> scene) : window(window), scene(scene) {};
     
-    void pollEvents();
     
     void renderScene();
     
-    void renderSceneThreaded();
+//    void renderSceneThreaded();
     
-    void f(int ii);
+//    void f(int ii);
     
     
-    // Getters and Setters
-    bool getWindowOpen();
     
     
 };
+
+
+
+} //namespace rgl
 
 
 
