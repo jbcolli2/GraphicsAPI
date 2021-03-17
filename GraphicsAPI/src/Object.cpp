@@ -1,5 +1,5 @@
 //
-//  Shape.cpp
+//  Object.cpp
 //  GraphicsAPI
 //
 //  Created by Jeb Collins on 2/18/21.
@@ -8,13 +8,72 @@
 #include <stdio.h>
 #include <cmath>
 
-#include "Shape.hpp"
-#include "VectorUtil.hpp"
+#include "Object.hpp"
+
+
+namespace rgl {
+
+// ///////////// Light::computeIllumination()   ////////////////
+/**
+ \brief Computes the illumination(intensity at a point) of a point light given a point and normal.  This is the general computation for a light with a direction vector between light and point.
+ 
+ \param objPos The position of the object the light is hitting
+ \param normal Normal of the object at `objPos`
+ \param viewPos The position of the viewer of the object (camera or another object if computing reflection)   Used for specular lighting
+ \param specularity Specularity of the object at that point
+ 
+ \returns The illumination to be used to modify the base color of the object at the point
+ */
+
+float Light::computeIllumination(const sf::Vector3f& objP, const sf::Vector3f& normal, const sf::Vector3f& viewPos, int specularity)
+{
+    sf::Vector3f pointToLight = -directionToPoint(objP);
+    float illumination = 0;
+    
+    float angle = Dot(pointToLight, normal);
+    if(angle >= 0)
+        illumination += intensity*angle/(Norm(pointToLight)*Norm(normal));
+        
+        if(specularity >= 0)
+        {
+            sf::Vector3f R = reflection(pointToLight, normal);
+
+            sf::Vector3f V = viewPos - objP;
+            angle = Dot(R,V);
+            if(angle >= 0)
+            {
+                illumination += intensity * std::pow(angle/(Norm(R)*Norm(V)), specularity);
+            }
+        }
+
+    return illumination;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /**               Plane Constructor
 
- - brief: Contructor for the Plane shape object.  Sets the private variables for the object.  Computes the normal based on the vertices in clockwise direction
+ - brief: Contructor for the Plane Object object.  Sets the private variables for the object.  Computes the normal based on the vertices in clockwise direction
          also compute the min/max in each of the x/y/z directions.
  - parameters: `std::vector` of the position of vertices, listed in clockwise **direction** around the plane
             color of the plane
@@ -26,18 +85,18 @@
 Plane::Plane(const std::vector<sf::Vector3f>& verts, const sf::Color& color,
              int specularity, float reflectivity)
 {
-    vertices_ = verts;
-    this-> color_ = color;
-    this->specularity_ = specularity;
-    reflectivity_ = reflectivity;
+    this->vertices = verts;
+    this-> color = color;
+    this->specularity = specularity;
+    this->reflectivity = reflectivity;
     
-    normal_ = Cross(vertices_[1] - vertices_[0], vertices_[3] - vertices_[0]);
-    min_x_ = std::min({vertices_[0].x, vertices_[1].x, vertices_[2].x, vertices_[3].x});
-    min_y_ = std::min({vertices_[0].y, vertices_[1].y, vertices_[2].y, vertices_[3].y});
-    min_z_ = std::min({vertices_[0].z, vertices_[1].z, vertices_[2].z, vertices_[3].z});
-    max_x_ = std::max({vertices_[0].x, vertices_[1].x, vertices_[2].x, vertices_[3].x});
-    max_y_ = std::max({vertices_[0].y, vertices_[1].y, vertices_[2].y, vertices_[3].y});
-    max_z_ = std::max({vertices_[0].z, vertices_[1].z, vertices_[2].z, vertices_[3].z});
+    normalVec = Cross(vertices[1] - vertices[0], vertices[3] - vertices[0]);
+    min_x = std::min({vertices[0].x, vertices[1].x, vertices[2].x, vertices[3].x});
+    min_y = std::min({vertices[0].y, vertices[1].y, vertices[2].y, vertices[3].y});
+    min_z = std::min({vertices[0].z, vertices[1].z, vertices[2].z, vertices[3].z});
+    max_x = std::max({vertices[0].x, vertices[1].x, vertices[2].x, vertices[3].x});
+    max_y = std::max({vertices[0].y, vertices[1].y, vertices[2].y, vertices[3].y});
+    max_z = std::max({vertices[0].z, vertices[1].z, vertices[2].z, vertices[3].z});
 
 }
 
@@ -66,10 +125,10 @@ bool Plane::intersect(const sf::Vector3f& P, const sf::Vector3f& D,
     
     
     //intersection of ray with plane
-    float denom = Dot(normal_, D);
+    float denom = Dot(normalVec, D);
     if(denom != 0)
     {
-        t = Dot(normal_, vertices_[0] - P)/denom;
+        t = Dot(normalVec, vertices[0] - P)/denom;
     }
     else
     {
@@ -84,9 +143,9 @@ bool Plane::intersect(const sf::Vector3f& P, const sf::Vector3f& D,
     
     intersectP = P + t*D;
     
-    if(min_x_ <= intersectP.x && intersectP.x <= max_x_ &&
-       min_y_ <= intersectP.y && intersectP.y <= max_y_ &&
-       min_z_ <= intersectP.z && intersectP.z <= max_z_)
+    if(min_x <= intersectP.x && intersectP.x <= max_x &&
+       min_y <= intersectP.y && intersectP.y <= max_y &&
+       min_z <= intersectP.z && intersectP.z <= max_z)
     {
         return true;
     }
@@ -121,11 +180,11 @@ bool Plane::intersect(const sf::Vector3f& P, const sf::Vector3f& D,
 Sphere::Sphere(const sf::Vector3f& center, float radius, const sf::Color& color,
                int specularity, float reflectivity)
 {
-    center_ = center;
-    radius_ = radius;
-    color_ = color;
-    specularity_ = specularity;
-    reflectivity_ = reflectivity;
+    this->center = center;
+    this->radius = radius;
+    this->color = color;
+    this->specularity = specularity;
+    this->reflectivity = reflectivity;
 
 }
 
@@ -148,12 +207,12 @@ bool Sphere::intersect(const sf::Vector3f& P, const sf::Vector3f& D,
                        float tmin, float tmax,
                        float& t, sf::Vector3f& intersectP)
 {
-    sf::Vector3f viewP_minus_sphere = P - center_;
+    sf::Vector3f viewP_minus_sphere = P - center;
     
     // Quadratic coefficients
     float a = Dot(D, D);
     float b = 2*Dot(viewP_minus_sphere, D);
-    float c = Dot(viewP_minus_sphere, viewP_minus_sphere) - radius_*radius_;
+    float c = Dot(viewP_minus_sphere, viewP_minus_sphere) - radius*radius;
     
     float discriminant = b*b - 4*a*c;
     if(discriminant <= 0)
@@ -178,3 +237,11 @@ bool Sphere::intersect(const sf::Vector3f& P, const sf::Vector3f& D,
     }
     
 }
+
+
+
+
+
+
+
+} // namespace rgl

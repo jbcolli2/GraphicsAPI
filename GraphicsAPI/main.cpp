@@ -24,7 +24,7 @@ int main(int argc, const char * argv[]) {
     bool rendered = false;
     
     std::shared_ptr<Window> window = std::make_shared<Window>(Sw, Sh);
-    std::shared_ptr<Scene> scene = std::make_shared<Scene>(Sw, Sh);
+    std::shared_ptr<Scene> scene = std::make_shared<Scene>();
     Renderer renderer(window, scene);
     
     // run the program as long as the window is open
