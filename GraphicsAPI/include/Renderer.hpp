@@ -38,12 +38,13 @@ public:
     
     void renderScene();
     
-    
-    
-    
-    
     sf::Color computePixelValue(int canvasX, int cavasY);
+ 
     
+    
+    
+    
+private:
     sf::Color traceRay(const sf::Vector3f& P, const sf::Vector3f& D, float tmin, float tmax,
                        int reflectionDepth = 0);
     

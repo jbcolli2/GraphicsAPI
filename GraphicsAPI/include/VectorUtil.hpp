@@ -44,7 +44,7 @@ float Norm(const sf::Vector3<T>& u)
 
 // Compute reflection vector
 template <typename T>
-sf::Vector3<T> reflection(const sf::Vector3<T>& L, const sf::Vector3<T>& N) {return 2.f*N*Dot(N,L) - L;};
+sf::Vector3<T> reflection(const sf::Vector3<T>& L, const sf::Vector3<T>& N) {return L - 2.f*N*Dot(N,L);};
 
 
 

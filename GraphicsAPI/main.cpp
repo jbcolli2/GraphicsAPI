@@ -39,7 +39,7 @@ int main(int argc, const char * argv[]) {
         // Only render the scene once, not every 1/60 of a second
         if(!rendered)
         {
-            
+//            renderer.computePixelValue(0, 0);
             auto start = std::chrono::steady_clock::now();
             
             renderer.renderScene();

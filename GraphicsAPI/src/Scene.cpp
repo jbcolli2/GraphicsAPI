@@ -20,9 +20,9 @@ Scene::Scene()
 {
     cam = Camera(sf::Vector3f(0,0,0), sf::Vector3f(0,0,1), 1, 1, 1);
     
-    this->lights.push_back(std::make_shared<PointLight>( sf::Vector3f(0,4,3), 0.4 ));
-    this->lights.push_back(std::make_shared<DirLight>( sf::Vector3f(-.5, -.5, 0), 0.4 ));
-    this->lights.push_back(std::make_shared<AmbientLight>( 0.8 ));
+    this->lights.push_back(std::make_shared<PointLight>( sf::Vector3f(-1,1,0.7), 0.6 ));
+    this->lights.push_back(std::make_shared<DirLight>( sf::Vector3f(.1, -.1, 1), 0.2 ));
+    this->lights.push_back(std::make_shared<AmbientLight>( 0.2 ));
     
     
     std::shared_ptr<Object> skybox = std::make_shared<Skybox>(sf::Color(0,0,60));
@@ -30,6 +30,16 @@ Scene::Scene()
     makeObjects();
     
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -49,11 +59,11 @@ void Scene::makeObjects()
     
     objects.push_back(std::make_shared<Plane>(plane_verts, sf::Color::Yellow, -1));
     
-//    objects.push_back(std::make_shared<Sphere>(sf::Vector3f(-3,-.5,6), 1, sf::Color::Red, -1));
-    objects.push_back(std::make_shared<Sphere>(sf::Vector3f(0,-.3,3), .5, sf::Color::Yellow, 100));
+//    objects.push_back(std::make_shared<Sphere>(sf::Vector3f(-.4,.3,1.5), .1, sf::Color::Blue, -1));
+    objects.push_back(std::make_shared<Sphere>(sf::Vector3f(0,0,2), .5, sf::Color::Red, 100));
 //    objects.push_back(std::make_shared<Sphere>(sf::Vector3f(0,.8,2.5), .4, sf::Color::Red, 1));
 
-    objects.push_back(std::make_shared<Sphere>(sf::Vector3f(1.3,.5,3.2), .4, sf::Color(50, 120,0), 2));
+//    objects.push_back(std::make_shared<Sphere>(sf::Vector3f(1.3,.5,3.2), .4, sf::Color(50, 120,0), 2));
 
     
     // A wall facing the camera on the left
@@ -151,7 +161,11 @@ bool Scene::isInShadow(const sf::Vector3f &objP, const std::shared_ptr<Light>& l
     sf::Vector3f tempP;
     std::shared_ptr<Object> tempObj;
     
-    return nearestIntersection(objP, light->directionToPoint(objP), rayhit_eps, INFINITY, tempP, tempObj);
+    return nearestIntersection(objP, -light->directionToPoint(objP), rayhit_eps, INFINITY, tempP, tempObj);
+    
+    ///////// Debug ////////////////////////
+//    return false;
+    /////////  ////////////////////////
 }
 
 

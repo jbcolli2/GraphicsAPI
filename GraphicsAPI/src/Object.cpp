@@ -36,7 +36,7 @@ float Light::computeIllumination(const sf::Vector3f& objP, const sf::Vector3f& n
         
         if(specularity >= 0)
         {
-            sf::Vector3f R = reflection(pointToLight, normal);
+            sf::Vector3f R = reflection(-pointToLight, normal/Norm(normal));
 
             sf::Vector3f V = viewPos - objP;
             angle = Dot(R,V);
