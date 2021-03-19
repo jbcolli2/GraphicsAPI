@@ -45,13 +45,13 @@ public:
     
     
 private:
-    sf::Color traceRay(const sf::Vector3f& P, const sf::Vector3f& D, float tmin, float tmax,
+    bool traceRay(const sf::Vector3f& P, const sf::Vector3f& D, float tmin, float tmax, sf::Color& obj_value,
                        int reflectionDepth = 0);
     
     
-    sf::Color computeLitValue(const sf::Vector3f& objP, const sf::Vector3f& normal, int specularity, const sf::Color& rawValue);
+    sf::Color computeLitValue(const sf::Vector3f& objP, const sf::Vector3f& normal, const sf::Vector3f& viewPos, int specularity, const sf::Color& rawValue);
     
-    void computeReflection(){};
+    sf::Color computeReflection(const sf::Vector3f& objP, const sf::Vector3f& reflectD, int reflectionDepth, float reflectivity, const sf::Color& localValue);
     
     
     void canvasToView(int , int , float& , float& );
@@ -61,6 +61,7 @@ private:
 //    void f(int ii);
     
     
+    int max_reflections = 1;
     
     
 };

@@ -54,6 +54,7 @@ public:
     float getViewWidth() {return cam.getViewWidth();};
     float getViewHeight() {return cam.getViewHeight();};
     float getViewDepth() {return cam.getViewDepth(); };
+    float getRayhit() {return this->rayhit_eps;};
     std::vector< std::shared_ptr<Light> > getLights() {return lights;};
     
 private:
@@ -65,7 +66,7 @@ private:
     std::vector< std::shared_ptr<Object> > objects;
 
     
-    static constexpr float rayhit_eps = 5e-7;
+    static constexpr float rayhit_eps = 5e-5;
     static constexpr int maxReflectionDepth = 1;
     std::shared_ptr<Object> skybox = std::make_shared<Skybox>(sf::Color(0,0,60));
     

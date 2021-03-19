@@ -107,7 +107,10 @@ sf::Color Renderer::computePixelValue(int canvasX, int canvasY)
     canvasToView(canvasX, canvasY, viewX, viewY);
     sf::Vector3f camDirVector = sf::Vector3f(viewX,viewY,scene->getViewDepth()) - scene->getCameraPos();
     
-    return traceRay(scene->getCameraPos(), camDirVector, 1, INFINITY);
+    sf::Color retValue;
+    traceRay(scene->getCameraPos(), camDirVector, 1, INFINITY, retValue);
+    
+    return retValue;
 }
 
 
@@ -127,32 +130,36 @@ sf::Color Renderer::computePixelValue(int canvasX, int canvasY)
     \brief Follows a ray defined by point P and direction vector D.  Finds the nearest object in the scene the intersects that ray and satisfies t \in [tmin, tmax].
  Returns the rendered value of that intersected object.
  
-    \param P Point that defines the ray
+    \param viewPos Point that defines the ray.  Also the point of view of the reciever of the light bouncing off the object.
     \param D Direction vector of the ray
     \param tmin/tmax Defines the valid interval for the line parameter t
     \param reflectionDepth How many reflections have we calculated thus far.  Essentially what is the recursion depth of this function call.
  
  */
-sf::Color Renderer::traceRay(const sf::Vector3f& P, const sf::Vector3f& D, float tmin, float tmax,
-                   int reflectionDepth)
+bool Renderer::traceRay(const sf::Vector3f& viewPos, const sf::Vector3f& D, float tmin, float tmax,
+                   sf::Color& obj_value, int reflectionDepth)
 {
     std::shared_ptr<Object> object;
     sf::Vector3f obj_P{0,0,0};
-    sf::Color obj_value;
     
     // Find the intersection of camera ray with the nearest object
-    bool hitObject = scene->nearestIntersection(P, D, tmin, tmax, obj_P, object);
+    bool hitObject = scene->nearestIntersection(viewPos, D, tmin, tmax, obj_P, object);
     obj_value = object->getColor();
     
     if(hitObject)
     {
-        obj_value = computeLitValue(obj_P, object->normal(obj_P), object->getSpecularity(), obj_value);
+        obj_value = computeLitValue(obj_P, object->normal(obj_P), viewPos, object->getSpecularity(), obj_value);
         
-        computeReflection();
+        if(reflectionDepth <= max_reflections)
+        {
+            obj_value = computeReflection(obj_P, reflection(obj_P - viewPos, object->normal(obj_P)), reflectionDepth, object->getReflectivity(), obj_value);
+        }
+        
     }
     
     
-    return obj_value;
+    
+    return hitObject;
 }
 
 
@@ -179,7 +186,7 @@ sf::Color Renderer::traceRay(const sf::Vector3f& P, const sf::Vector3f& D, float
  
     \returns The color value of the object at point objP after lighting has been taken into account
  */
-sf::Color Renderer::computeLitValue(const sf::Vector3f& objP, const sf::Vector3f& normal, int specularity, const sf::Color& rawValue)
+sf::Color Renderer::computeLitValue(const sf::Vector3f& objP, const sf::Vector3f& normal, const sf::Vector3f& viewPos, int specularity, const sf::Color& rawValue)
 {
     float total_illumination = 0;
     sf::Color litValue = rawValue;
@@ -188,7 +195,7 @@ sf::Color Renderer::computeLitValue(const sf::Vector3f& objP, const sf::Vector3f
     {
         if(not scene->isInShadow(objP, light))
         {
-            total_illumination += light->computeIllumination(objP, normal, scene->getCameraPos(), specularity);
+            total_illumination += light->computeIllumination(objP, normal, viewPos, specularity);
         }
     }
     
@@ -204,9 +211,33 @@ sf::Color Renderer::computeLitValue(const sf::Vector3f& objP, const sf::Vector3f
 
 // /////////////  computeReflection  ////////////////
 /**
-    \brief ???????
+    \brief Call traceRay again, but this time starting at the hit point on the object and looking in the reflection direction of the camera.
+    \param objP The position on the object that the ray is reflecting on
+    \param reflectD The reflection direction
+    \param reflectionDepth The number of reflections that have been done thus far
+    \param reflectivity How reflective the object is.  This is the convex combination parameter \in [0,1]
+    \param rawValue[out] The original color before the reflection calculation is done
+ 
+    
  */
-void computeReflection(){};
+sf::Color Renderer::computeReflection(const sf::Vector3f& objP, const sf::Vector3f& reflectD, int reflectionDepth, float reflectivity, const sf::Color& localValue)
+{
+    sf::Color reflectValue, retValue;
+    if(traceRay(objP, reflectD, scene->getRayhit(), INFINITY,reflectValue, reflectionDepth + 1))
+    {
+        retValue.r = reflectivity*reflectValue.r + (1-reflectivity)*localValue.r;
+        retValue.g = reflectivity*reflectValue.g + (1-reflectivity)*localValue.g;
+        retValue.b = reflectivity*reflectValue.b + (1-reflectivity)*localValue.b;
+    }
+    else
+    {
+        retValue = localValue;
+    }
+    
+    return retValue;
+    
+    
+}
 
 
 
