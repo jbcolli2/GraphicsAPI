@@ -16,13 +16,13 @@ namespace rgl{
 
 
 template <typename T>
-float Dot(const sf::Vector2<T>& u, const sf::Vector2<T>& v)
+T Dot(const sf::Vector2<T>& u, const sf::Vector2<T>& v)
 {
     return u.x*v.x + u.y*v.y;
 }
 
 template <typename T>
-float Dot(const sf::Vector3<T>& u, const sf::Vector3<T>& v)
+T Dot(const sf::Vector3<T>& u, const sf::Vector3<T>& v)
 {
     return u.x*v.x + u.y*v.y + u.z*v.z;
 }
@@ -35,7 +35,7 @@ sf::Vector3<T> Cross(const sf::Vector3<T>& u, const sf::Vector3<T>& v)
 
 
 template <typename T>
-float Norm(const sf::Vector3<T>& u)
+T Norm(const sf::Vector3<T>& u)
 {
     return std::sqrt( Dot(u,u) );
 }

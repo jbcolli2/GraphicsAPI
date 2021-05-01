@@ -57,7 +57,7 @@ void Scene::makeObjects()
     plane_verts.push_back(sf::Vector3f(4, -.3, 10.0));
     plane_verts.push_back(sf::Vector3f(4, -.4, 0.75));
     
-//    objects.push_back(std::make_shared<Plane>(plane_verts, sf::Color::Yellow, -1));
+    objects.push_back(std::make_shared<Plane>(plane_verts, sf::Color::Yellow, -1));
     
     objects.push_back(std::make_shared<Sphere>(sf::Vector3f(-.4,0,1.3), .3, sf::Color::Green, -1));
     objects.push_back(std::make_shared<Sphere>(sf::Vector3f(.5,-.2,2.5), .5, sf::Color::White, 100, 0.2));

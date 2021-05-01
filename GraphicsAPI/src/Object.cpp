@@ -6,6 +6,7 @@
 //
 
 #include <stdio.h>
+#include <iostream>
 #include <cmath>
 
 #include "Object.hpp"
@@ -32,6 +33,7 @@ float Light::computeIllumination(const sf::Vector3f& objP, const sf::Vector3f& n
     
     float angle = Dot(pointToLight, normal);
     if(angle >= 0)
+    {
         illumination += intensity*angle/(Norm(pointToLight)*Norm(normal));
         
         if(specularity >= 0)
@@ -45,6 +47,7 @@ float Light::computeIllumination(const sf::Vector3f& objP, const sf::Vector3f& n
                 illumination += intensity * std::pow(angle/(Norm(R)*Norm(V)), specularity);
             }
         }
+    }
 
     return illumination;
 }
@@ -66,14 +69,20 @@ float Light::computeIllumination(const sf::Vector3f& objP, const sf::Vector3f& n
 
 
 
-
+Plane::Plane(const sf::Color& color, int specularity, float reflectivity)
+{
+    this->vertices.push_back(sf::Vector3f(0,0,2));
+    this->vertices.push_back(sf::Vector3f(1,0,2));
+    this->vertices.push_back(sf::Vector3f(1,1,2));
+    this->vertices.push_back(sf::Vector3f(0,1,2));
+}
 
 
 
 
 /**               Plane Constructor
 
- - brief: Contructor for the Plane Object object.  Sets the private variables for the object.  Computes the normal based on the vertices in clockwise direction
+ - brief: Contructor for the Plane Object object.  Sets the private variables for the object.  Computes the normal based on the vertices in clockwise direction when looking at outside of plane
          also compute the min/max in each of the x/y/z directions.
  - parameters: `std::vector` of the position of vertices, listed in clockwise **direction** around the plane
             color of the plane
@@ -91,6 +100,12 @@ Plane::Plane(const std::vector<sf::Vector3f>& verts, const sf::Color& color,
     this->reflectivity = reflectivity;
     
     normalVec = Cross(vertices[1] - vertices[0], vertices[3] - vertices[0]);
+    
+    normal01 = Cross(normalVec, vertices[1] - vertices[0]);
+    normal12 = Cross(normalVec, vertices[2] - vertices[1]);
+    normal23 = Cross(normalVec, vertices[3] - vertices[2]);
+    normal30 = Cross(normalVec, vertices[0] - vertices[3]);
+    
     min_x = std::min({vertices[0].x, vertices[1].x, vertices[2].x, vertices[3].x});
     min_y = std::min({vertices[0].y, vertices[1].y, vertices[2].y, vertices[3].y});
     min_z = std::min({vertices[0].z, vertices[1].z, vertices[2].z, vertices[3].z});
@@ -143,9 +158,12 @@ bool Plane::intersect(const sf::Vector3f& P, const sf::Vector3f& D,
     
     intersectP = P + t*D;
     
-    if(min_x <= intersectP.x && intersectP.x <= max_x &&
-       min_y <= intersectP.y && intersectP.y <= max_y &&
-       min_z <= intersectP.z && intersectP.z <= max_z)
+    float boundTest01 = Dot(intersectP - vertices[0], normal01);
+    float boundTest12 = Dot(intersectP - vertices[1], normal12);
+    float boundTest23 = Dot(intersectP - vertices[2], normal23);
+    float boundTest30 = Dot(intersectP - vertices[0], normal30);
+    
+    if(boundTest01 > 0 && boundTest12 > 0 && boundTest23 > 0 && boundTest30 > 0)
     {
         return true;
     }

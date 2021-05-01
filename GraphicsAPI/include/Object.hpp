@@ -192,12 +192,15 @@ public:
 class Plane : public Object
 {
     sf::Vector3f normalVec;
+    sf::Vector3f normal01, normal12, normal23, normal30;  // normals for testing intersection
     std::vector<sf::Vector3f> vertices;
     float min_x, max_x;
     float min_y, max_y;
     float min_z, max_z;
     
 public:
+    Plane(const sf::Color& color = sf::Color::White,
+          int specularity = -1, float reflectivity = 0);
     Plane(const std::vector<sf::Vector3f>& verts, const sf::Color& color = sf::Color::White,
           int specularity = -1, float reflectivity = 0);
     bool virtual intersect(const sf::Vector3f& P, const sf::Vector3f& D,
