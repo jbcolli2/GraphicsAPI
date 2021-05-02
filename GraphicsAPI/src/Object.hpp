@@ -28,6 +28,9 @@ public:
     Camera(const sf::Vector3f& position, const sf::Vector3f& direction, float viewWidth, float viewHeight, float viewDepth) :
         position(position), direction(direction), viewWidth(viewWidth), viewHeight(viewHeight), viewDepth(viewDepth) {};
     
+    
+    
+    // Getters and Setters
     sf::Vector3f getPosition() {return position;};
     sf::Vector3f getDirection() {return direction;};
     float getViewWidth() {return viewWidth;};

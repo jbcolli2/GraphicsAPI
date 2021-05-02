@@ -44,12 +44,32 @@ class Scene
 public:
     Scene();
     
+    // Computation methods
     bool nearestIntersection(const sf::Vector3f& P, const sf::Vector3f& D, float tmin, float tmax, sf::Vector3f& obj_P,
                                                  std::shared_ptr<Object>& object);
- 
     bool isInShadow(const sf::Vector3f& objP, const std::shared_ptr<Light>& light);
     
     
+    
+    
+    //Scene creation methods
+    void addCamera(const sf::Vector3f& position = sf::Vector3f(0,0,0), const sf::Vector3f& direction = sf::Vector3f(0,0,1),
+                   float viewWidth = 1, float viewHeight = 1, float viewDepth = 1)
+    {this->cam = Camera(position, direction viewWidth, viewHeight, viewDepth);};
+    
+    void addObject(const Object& object);
+    void addSphere(const sf::Vector3f& center, float radius, const sf::Color& color = sf::Color::White, int specularity = -1);
+    void addPlane(const std::vector<sf::Vector3f>& verts, const sf::Color& color = sf::Color::White, int specularity = -1);
+    void addPlane(const sf::Vector3f& v0, const sf::Vector3f& v1, const sf::Vector3f& v2,
+                  const sf::Vector3f& v3, const sf::Color& color = sf::Color::White, int specularity = -1);
+    
+    void addLight(const std::shared_ptr<Light>& light)
+    void addAmbLight(float intensity)
+    void addPointLight(const sf::Vector3f& position, float intensity)
+    void addDirLight(const sf::Vector3f& direction, float intensity)
+    
+    
+    // Getters and Setters
     sf::Vector3f getCameraPos() {return cam.getPosition();};
     float getViewWidth() {return cam.getViewWidth();};
     float getViewHeight() {return cam.getViewHeight();};

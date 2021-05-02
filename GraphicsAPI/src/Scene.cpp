@@ -18,17 +18,7 @@ namespace rgl
 
 Scene::Scene()
 {
-    cam = Camera(sf::Vector3f(0,0,0), sf::Vector3f(0,0,1), 1, 1, 1);
-    
-//    this->lights.push_back(std::make_shared<PointLight>( sf::Vector3f(-1,1,0.7), 0.6 ));
-    this->lights.push_back(std::make_shared<DirLight>( sf::Vector3f(0, -.3, 1), 0.6 ));
-    this->lights.push_back(std::make_shared<AmbientLight>( 0.2 ));
-    
-    
     std::shared_ptr<Object> skybox = std::make_shared<Skybox>(sf::Color(0,0,60));
-    
-    makeObjects();
-    
 }
 
 
@@ -37,7 +27,59 @@ Scene::Scene()
 
 
 
+void Scene::addObject(const std::shared_ptr<Object>& object)
+{
+    this->objects.push_back(object);
+}
 
+void Scene::addSphere(const sf::Vector3f& center, float radius, const sf::Color& color, int specularity)
+{
+    this->objects.push_back(std::make_shared<Sphere>(center, radius, color, specularity));
+}
+
+
+
+void Scene::addPlane(const std::vector<sf::Vector3f>& verts, const sf::Color& color, int specularity)
+{
+    this->objects.push_back(std::make_shared<Plane>(verts, color, specularity));
+}
+
+void Scene::addPlane(const sf::Vector3f& v0, const sf::Vector3f& v1, const sf::Vector3f& v2,
+                     const sf::Vector3f& v3, const sf::Color& color, int specularity)
+{
+    std::vector<sf::Vector3d> verts;
+    verts.push_back(v0);
+    verts.push_back(v1);
+    verts.push_back(v2);
+    verts.push_back(v3);
+    
+    this->objects.push_back(std::make_shared<Plane>(verts, color, specularity));
+}
+
+
+void Scene::addLight(const std::shared_ptr<Light>& light)
+{
+    this->lights.push_back(light);
+}
+
+
+
+void Scene::addAmbLight(float intensity)
+{
+    this->lights.push_back(std::make_shared<AmbientLight>(intensity));
+}
+
+
+void Scene::addPointLight(const sf::Vector3f& position, float intensity)
+{
+    this->lights.push_back(std::make_shared<PointLight>(position, intensity));
+}
+
+
+void Scene::addDirLight(const sf::Vector3f& direction, float intensity)
+{
+    this->lights.push_back(std::make_shared<DirLight>(direction, intensity));
+}
 
 
 
