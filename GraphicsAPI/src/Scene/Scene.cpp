@@ -47,7 +47,7 @@ void Scene::addPlane(const std::vector<sf::Vector3f>& verts, const sf::Color& co
 void Scene::addPlane(const sf::Vector3f& v0, const sf::Vector3f& v1, const sf::Vector3f& v2,
                      const sf::Vector3f& v3, const sf::Color& color, int specularity)
 {
-    std::vector<sf::Vector3d> verts;
+    std::vector<sf::Vector3f> verts;
     verts.push_back(v0);
     verts.push_back(v1);
     verts.push_back(v2);
@@ -146,7 +146,7 @@ void Scene::makeObjects()
  
  \returns Index of the object vector corresponding to the object that the ray hit.
  */
-bool Scene::nearestIntersection(const sf::Vector3f& P, const sf::Vector3f& D, float tmin, float tmax, sf::Vector3f& obj_P, std::shared_ptr<Object>& object)
+bool Scene::nearestIntersection(const Ray& ray, sf::Vector3f& obj_P, std::shared_ptr<Object>& object)
 {
     float t_intersect = INFINITY;
     int obj_idx = -1;
@@ -155,7 +155,7 @@ bool Scene::nearestIntersection(const sf::Vector3f& P, const sf::Vector3f& D, fl
     sf::Vector3f temp_obj_P;
     for(int ii = 0; ii < objects.size(); ++ii)
     {
-        if(objects[ii]->intersect(P, D, tmin, tmax, t, temp_obj_P))
+        if(objects[ii]->intersect(ray, t, temp_obj_P))
         {
             if(t < t_intersect)
             {
@@ -203,11 +203,9 @@ bool Scene::isInShadow(const sf::Vector3f &objP, const std::shared_ptr<Light>& l
     sf::Vector3f tempP;
     std::shared_ptr<Object> tempObj;
     
-    return nearestIntersection(objP, -light->directionToPoint(objP), rayhit_eps, INFINITY, tempP, tempObj);
+    Ray ray{objP, -light->directionToPoint(objP), rayhit_eps, INFINITY};
+    return nearestIntersection(ray, tempP, tempObj);
     
-    ///////// Debug ////////////////////////
-//    return false;
-    /////////  ////////////////////////
 }
 
 

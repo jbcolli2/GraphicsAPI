@@ -9,6 +9,7 @@
 #define Object_h
 
 #include <SFML/Graphics.hpp>
+#include "Ray.hpp"
 #include "VectorUtil.hpp"
 
 
@@ -156,8 +157,7 @@ public:
 class Object
 {
 public:
-    virtual bool intersect(const sf::Vector3f& P, const sf::Vector3f& D,
-                           float tmin, float tmax,
+    virtual bool intersect(const Ray& ray,
                            float& t, sf::Vector3f& intersectP) = 0;
     virtual sf::Vector3f normal(const sf::Vector3f& P) = 0;
     sf::Color getColor() { return color;};
@@ -181,8 +181,7 @@ class Skybox : public Object
 public:
     Skybox(const sf::Color& back_color) {color = back_color;};
     
-    virtual bool intersect(const sf::Vector3f& P, const sf::Vector3f& D,
-                           float tmin, float tmax,
+    virtual bool intersect(const Ray& ray,
                            float& t, sf::Vector3f& intersectP) override {return true;};
     
     virtual sf::Vector3f normal(const sf::Vector3f& P) override {return sf::Vector3f(0,0,0);};
@@ -206,8 +205,7 @@ public:
           int specularity = -1, float reflectivity = 0);
     Plane(const std::vector<sf::Vector3f>& verts, const sf::Color& color = sf::Color::White,
           int specularity = -1, float reflectivity = 0);
-    bool virtual intersect(const sf::Vector3f& P, const sf::Vector3f& D,
-                           float tmin, float tmax,
+    virtual bool intersect(const Ray& ray,
                            float& t, sf::Vector3f& intersectP) override;
     sf::Vector3f virtual normal(const sf::Vector3f& P) override {return normalVec;};
     
@@ -224,8 +222,7 @@ class Sphere : public Object
 public:
     Sphere(const sf::Vector3f& center, float radius, const sf::Color& color = sf::Color::White,
            int specularity = -1, float reflectivity = 0);
-    bool intersect(const sf::Vector3f& P, const sf::Vector3f& D,
-                           float tmin, float tmax,
+    virtual bool intersect(const Ray& ray,
                            float& t, sf::Vector3f& intersectP) override;
     sf::Vector3f normal(const sf::Vector3f& P) override {return P - center;};
 };

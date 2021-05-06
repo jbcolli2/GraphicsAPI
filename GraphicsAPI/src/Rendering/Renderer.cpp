@@ -143,7 +143,8 @@ bool Renderer::traceRay(const sf::Vector3f& viewPos, const sf::Vector3f& D, floa
     sf::Vector3f obj_P{0,0,0};
     
     // Find the intersection of camera ray with the nearest object
-    bool hitObject = scene->nearestIntersection(viewPos, D, tmin, tmax, obj_P, object);
+    Ray ray{viewPos, D, tmin, tmax};
+    bool hitObject = scene->nearestIntersection(ray, obj_P, object);
     obj_value = object->getColor();
     
     if(hitObject)

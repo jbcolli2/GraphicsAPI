@@ -131,32 +131,31 @@ Plane::Plane(const std::vector<sf::Vector3f>& verts, const sf::Color& color,
             intersectP = 3D point of closes intersection of ray with plane
  */
 
-bool Plane::intersect(const sf::Vector3f& P, const sf::Vector3f& D,
-                       float tmin, float tmax,
-                       float& t, sf::Vector3f& intersectP)
+bool Plane::intersect(const Ray& ray,
+                            float& t, sf::Vector3f& intersectP)
 {
     // set the return values if intersection does not occur
     t = INFINITY;
     
     
     //intersection of ray with plane
-    float denom = Dot(normalVec, D);
+    float denom = Dot(normalVec, ray.dir);
     if(denom != 0)
     {
-        t = Dot(normalVec, vertices[0] - P)/denom;
+        t = Dot(normalVec, vertices[0] - ray.point)/denom;
     }
     else
     {
         return false;
     }
     
-    if(t <= tmin || t >= tmax)
+    if(not ray.isInBounds(t))
     {
         t = INFINITY;
         return false;
     }
     
-    intersectP = P + t*D;
+    intersectP = ray.evaluateAt(t);
     
     float boundTest01 = Dot(intersectP - vertices[0], normal01);
     float boundTest12 = Dot(intersectP - vertices[1], normal12);
@@ -221,15 +220,14 @@ Sphere::Sphere(const sf::Vector3f& center, float radius, const sf::Color& color,
     -returns: t = value of $t$ for ray where intersection occurs
             intersectP = 3D point of closes intersection of ray with plane
  */
-bool Sphere::intersect(const sf::Vector3f& P, const sf::Vector3f& D,
-                       float tmin, float tmax,
+bool Sphere::intersect(const Ray& ray,
                        float& t, sf::Vector3f& intersectP)
 {
-    sf::Vector3f viewP_minus_sphere = P - center;
+    sf::Vector3f viewP_minus_sphere = ray.point - center;
     
     // Quadratic coefficients
-    float a = Dot(D, D);
-    float b = 2*Dot(viewP_minus_sphere, D);
+    float a = Dot(ray.dir, ray.dir);
+    float b = 2*Dot(viewP_minus_sphere, ray.dir);
     float c = Dot(viewP_minus_sphere, viewP_minus_sphere) - radius*radius;
     
     float discriminant = b*b - 4*a*c;
@@ -243,9 +241,9 @@ bool Sphere::intersect(const sf::Vector3f& P, const sf::Vector3f& D,
     float sqrt_disc = std::sqrt(discriminant);
     
     t =  std::min(denom*(-b + sqrt_disc), denom*(-b- sqrt_disc));
-    if(tmin <= t && t <= tmax)
+    if(ray.isInBounds(t))
     {
-        intersectP = P + t*D;
+        intersectP = ray.evaluateAt(t);
         return true;
     }
     else

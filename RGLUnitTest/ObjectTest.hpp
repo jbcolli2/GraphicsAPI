@@ -13,6 +13,7 @@
 
 #include "gtest/gtest.h"
 #include "Object.hpp"
+#include "Ray.hpp"
 #include <SFML/Graphics.hpp>
 
 
@@ -46,15 +47,13 @@ protected:
 
 TEST_F(ObjectIntersect, SphereNormalRay)
 {
-    sf::Vector3f rayP{0,0,1};
-    sf::Vector3f rayD = sphere_center;
-    rayD.z -= 1.0f;
+    Ray ray(sf::Vector3f(0,0,1), sf::Vector3f(sphere_center.x, sphere_center.y, sphere_center.z - 1));
     
     float t;
     sf::Vector3f objP;
     bool didHit;
     
-    didHit = sphere.intersect(rayP, rayD, 0, INFINITY, t, objP);
+    didHit = sphere.intersect(ray, t, objP);
     sf::Vector3f normal = sphere.normal(objP);
     
     EXPECT_TRUE(didHit);
@@ -72,20 +71,19 @@ TEST_F(ObjectIntersect, SphereNormalRay)
 
 TEST_F(ObjectIntersect, SphereRayOutsidetRange)
 {
-    sf::Vector3f rayP{0,0,1};
-    sf::Vector3f rayD = sphere_center;
-    rayD.z -= 1.0f;
+    Ray ray(sf::Vector3f(0,0,1), sf::Vector3f(sphere_center.x, sphere_center.y, sphere_center.z - 1), 0, 0.5);
+
     
     float t;
     sf::Vector3f objP;
     bool didHit;
     
-    didHit = sphere.intersect(rayP, rayD, 0, 0.5, t, objP);
+    didHit = sphere.intersect(ray, t, objP);
     
     EXPECT_FALSE(didHit);
     
-    
-    didHit = sphere.intersect(rayP, rayD, 0.6, INFINITY, t, objP);
+    ray.setBounds(0.6, INFINITY);
+    didHit = sphere.intersect(ray, t, objP);
     
     EXPECT_FALSE(didHit);
 };
@@ -97,6 +95,7 @@ TEST_F(ObjectIntersect, SphereRayOutsidetRange)
 
 TEST_F(ObjectIntersect, SphereMiss)
 {
+    Ray ray(sf::Vector3f(0,0,0), sf::Vector3f(0,2,.5));
     sf::Vector3f rayP{0,0,0};
     sf::Vector3f rayD{0, 2, .5};
     
@@ -104,7 +103,7 @@ TEST_F(ObjectIntersect, SphereMiss)
     sf::Vector3f objP;
     bool didHit;
     
-    didHit = sphere.intersect(rayP, rayD, 0, INFINITY, t, objP);
+    didHit = sphere.intersect(ray, t, objP);
     
     EXPECT_FALSE(didHit);
     
@@ -122,12 +121,13 @@ TEST_F(ObjectIntersect, SphereObliqueRay)
 {
     sf::Vector3f rayP{.567, -1.09, 2.123};
     sf::Vector3f rayD = (sphere_center + sf::Vector3f(.2, .6, -.5)) - rayP;
+    Ray ray(rayP, rayD);
     
     float t;
     sf::Vector3f objP;
     bool didHit;
     
-    didHit = sphere.intersect(rayP, rayD, 0, INFINITY, t, objP);
+    didHit = sphere.intersect(ray, t, objP);
     sf::Vector3f normal = sphere.normal(objP);
     
     EXPECT_TRUE(didHit);
@@ -168,12 +168,13 @@ TEST_F(ObjectIntersect, PlaneNormalRay)
 {
     sf::Vector3f rayP{-.385946666666667, .170733333333333, 1.11800000000000};
     sf::Vector3f rayD{.418560000000000, -.922800000000000, 1.74400000000000};
+    Ray ray(rayP, rayD);
     
     float t;
     sf::Vector3f objP;
     bool didHit;
     
-    didHit = plane.intersect(rayP, rayD, 0, INFINITY, t, objP);
+    didHit = plane.intersect(ray, t, objP);
     sf::Vector3f normal = plane.normal(objP);
 
     
@@ -198,12 +199,13 @@ TEST_F(ObjectIntersect, PlaneObliqueRay)
 {
     sf::Vector3f rayP{-.385946666666667, .170733333333333, 1.11800000000000};
     sf::Vector3f rayD{.618560000000000, -1.02280000000000, 2.74400000000000};
+    Ray ray(rayP, rayD);
     
     float t;
     sf::Vector3f objP;
     bool didHit;
     
-    didHit = plane.intersect(rayP, rayD, 0, INFINITY, t, objP);
+    didHit = plane.intersect(ray, t, objP);
 
     
     EXPECT_TRUE(didHit);
@@ -224,12 +226,13 @@ TEST_F(ObjectIntersect, PlaneMissBounds)
 {
     sf::Vector3f rayP{.176666666666667, 2.70933333333333, 1.99000000000000};
     sf::Vector3f rayD{.418560000000000, -.922800000000000, 1.74400000000000};
+    Ray ray(rayP, rayD);
 
     float t;
     sf::Vector3f objP;
     bool didHit;
     
-    didHit = plane.intersect(rayP, rayD, 0, INFINITY, t, objP);
+    didHit = plane.intersect(ray, t, objP);
 
     
     EXPECT_FALSE(didHit);
@@ -247,12 +250,13 @@ TEST_F(ObjectIntersect, PlaneMissParallel)
 {
     sf::Vector3f rayP{0, 0, 0};
     sf::Vector3f rayD{-1.40900400000000, -2.26929280000000, -.862586400000000};
+    Ray ray(rayP, rayD);
 
     float t;
     sf::Vector3f objP;
     bool didHit;
     
-    didHit = plane.intersect(rayP, rayD, 0, INFINITY, t, objP);
+    didHit = plane.intersect(ray, t, objP);
 
     
     EXPECT_FALSE(didHit);
@@ -269,19 +273,20 @@ TEST_F(ObjectIntersect, PlaneMisstBounds)
 {
     sf::Vector3f rayP{-.385946666666667, .170733333333333, 1.11800000000000};
     sf::Vector3f rayD{.618560000000000, -1.02280000000000, 2.74400000000000};
+    Ray ray(rayP, rayD, .5, INFINITY);
     
     float t;
     sf::Vector3f objP;
     bool didHit;
     
-    didHit = plane.intersect(rayP, rayD, .5, INFINITY, t, objP);
+    didHit = plane.intersect(ray, t, objP);
 
     
     EXPECT_FALSE(didHit);
     
     
-    
-    didHit = plane.intersect(rayP, rayD, 0, .3, t, objP);
+    ray.setBounds(0, .3);
+    didHit = plane.intersect(ray, t, objP);
 
     
     EXPECT_FALSE(didHit);

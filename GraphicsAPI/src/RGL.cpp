@@ -25,6 +25,8 @@ int main(int argc, const char * argv[]) {
     
     std::shared_ptr<Window> window = std::make_shared<Window>(Sw, Sh);
     std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+    scene->addAmbLight(.8);
+    scene->addSphere(sf::Vector3f(0,0,2), 1, sf::Color::Red);
     Renderer renderer(window, scene);
     
     // run the program as long as the window is open
