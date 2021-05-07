@@ -9,6 +9,7 @@
 
 #include "VectorTest.hpp"
 #include "ObjectTest.hpp"
+#include "SceneTest.hpp"
 
 int main(int argc, char* argv[]){
     testing::InitGoogleTest(&argc, argv);

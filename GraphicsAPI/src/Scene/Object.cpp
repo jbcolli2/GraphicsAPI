@@ -240,8 +240,12 @@ bool Sphere::intersect(const Ray& ray,
     float denom = 0.5*(1/a);
     float sqrt_disc = std::sqrt(discriminant);
     
-    t =  std::min(denom*(-b + sqrt_disc), denom*(-b- sqrt_disc));
-    if(ray.isInBounds(t))
+    float t1 = denom*(-b + sqrt_disc);
+    float t2 = denom*(-b - sqrt_disc);
+    t1 = ray.isInBounds(t1) ? t1 : INFINITY;
+    t2 = ray.isInBounds(t2) ? t2 : INFINITY;
+    t =  std::min(t1, t2);
+    if(ray.isInBounds(t) && t != INFINITY)
     {
         intersectP = ray.evaluateAt(t);
         return true;

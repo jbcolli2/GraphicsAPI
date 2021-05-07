@@ -82,7 +82,7 @@ TEST_F(ObjectIntersect, SphereRayOutsidetRange)
     
     EXPECT_FALSE(didHit);
     
-    ray.setBounds(0.6, INFINITY);
+    ray.setBounds(50.6, INFINITY);
     didHit = sphere.intersect(ray, t, objP);
     
     EXPECT_FALSE(didHit);

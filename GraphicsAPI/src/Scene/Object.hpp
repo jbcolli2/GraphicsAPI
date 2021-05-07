@@ -205,6 +205,10 @@ public:
           int specularity = -1, float reflectivity = 0);
     Plane(const std::vector<sf::Vector3f>& verts, const sf::Color& color = sf::Color::White,
           int specularity = -1, float reflectivity = 0);
+    Plane(const sf::Vector3f& v0, const sf::Vector3f& v1,const sf::Vector3f& v2,const sf::Vector3f& v3,
+          const sf::Color& color = sf::Color::White, int specularity = -1, float reflectivity = 0) :
+    Plane(std::vector<sf::Vector3f>{v0, v1, v2, v3}, color, specularity, reflectivity) {};
+    
     virtual bool intersect(const Ray& ray,
                            float& t, sf::Vector3f& intersectP) override;
     sf::Vector3f virtual normal(const sf::Vector3f& P) override {return normalVec;};
