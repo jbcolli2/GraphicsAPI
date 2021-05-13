@@ -9,6 +9,7 @@
 #define Ray_h
 #include <stdio.h>
 #include <limits>
+#include <cmath>
 
 #include <SFML/Graphics.hpp>
 

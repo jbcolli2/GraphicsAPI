@@ -25,8 +25,15 @@ int main(int argc, const char * argv[]) {
     
     std::shared_ptr<Window> window = std::make_shared<Window>(Sw, Sh);
     std::shared_ptr<Scene> scene = std::make_shared<Scene>();
-    scene->addAmbLight(.8);
-    scene->addSphere(sf::Vector3f(0,0,2), 1, sf::Color::Red);
+//    scene->addAmbLight(.2);
+    scene->addPointLight(sf::Vector3f(0, 0, 0), .8);
+    
+    scene->addSphere(sf::Vector3f(0,1,3), .5, sf::Color::Red, 2, .5);
+    scene->addSphere(sf::Vector3f(1,0,3.3), .7, sf::Color::Yellow, 30, .5);
+    
+    
+    
+    
     Renderer renderer(window, scene);
     
     // run the program as long as the window is open
@@ -41,7 +48,7 @@ int main(int argc, const char * argv[]) {
         // Only render the scene once, not every 1/60 of a second
         if(!rendered)
         {
-//            renderer.computePixelValue(0, 0);
+            renderer.computePixelValue(0, 0);
             auto start = std::chrono::steady_clock::now();
             
             renderer.renderScene();

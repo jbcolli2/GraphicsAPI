@@ -100,6 +100,7 @@ Plane::Plane(const std::vector<sf::Vector3f>& verts, const sf::Color& color,
     this->reflectivity = reflectivity;
     
     normalVec = Cross(vertices[1] - vertices[0], vertices[3] - vertices[0]);
+    normalVec = normalVec/Norm(normalVec);
     
     normal01 = Cross(normalVec, vertices[1] - vertices[0]);
     normal12 = Cross(normalVec, vertices[2] - vertices[1]);

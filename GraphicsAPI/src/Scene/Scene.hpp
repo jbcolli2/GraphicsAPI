@@ -59,10 +59,13 @@ public:
     {this->cam = Camera(position, direction, viewWidth, viewHeight, viewDepth);};
     
     void addObject(const std::shared_ptr<Object>& object);
-    void addSphere(const sf::Vector3f& center, float radius, const sf::Color& color = sf::Color::White, int specularity = -1);
-    void addPlane(const std::vector<sf::Vector3f>& verts, const sf::Color& color = sf::Color::White, int specularity = -1);
+    void addSphere(const sf::Vector3f& center, float radius, const sf::Color& color = sf::Color::White,
+                   int specularity = -1, float reflection = 0);
+    void addPlane(const std::vector<sf::Vector3f>& verts, const sf::Color& color = sf::Color::White, int specularity = -1,
+                  float reflection = 0);
     void addPlane(const sf::Vector3f& v0, const sf::Vector3f& v1, const sf::Vector3f& v2,
-                  const sf::Vector3f& v3, const sf::Color& color = sf::Color::White, int specularity = -1);
+                  const sf::Vector3f& v3, const sf::Color& color = sf::Color::White,
+                  int specularity = -1, float reflection = 0);
     
     void addLight(const std::shared_ptr<Light>& light);
     void addAmbLight(float intensity);

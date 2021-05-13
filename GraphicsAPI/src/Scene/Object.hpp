@@ -228,7 +228,7 @@ public:
            int specularity = -1, float reflectivity = 0);
     virtual bool intersect(const Ray& ray,
                            float& t, sf::Vector3f& intersectP) override;
-    sf::Vector3f normal(const sf::Vector3f& P) override {return P - center;};
+    sf::Vector3f normal(const sf::Vector3f& P) override {return (P - center)/radius;};
 };
 
 

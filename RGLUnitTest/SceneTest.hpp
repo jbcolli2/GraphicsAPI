@@ -300,4 +300,121 @@ TEST_F(SceneTest, SphereInFloorHitSphere)
 }
 
 
+
+
+
+
+
+
+
+
+TEST_F(SceneTest, OccludedPtLightAboveSphere)
+{
+    int spec = 21;
+    Scene scene;
+
+    scene.addSphere(sf::Vector3f(0, 1, 3), 1, sf::Color::Red, spec);
+    scene.addPlane(sf::Vector3f(-3, -1, 1), sf::Vector3f(-3, -1, 4), sf::Vector3f(3, -1, 4), sf::Vector3f(3, -1, 1));
+
+    scene.addPointLight(sf::Vector3f(0,3,3), 1);
+    
+    auto lights = scene.getLights();
+    
+    bool inShadow = scene.isInShadow(sf::Vector3f(0,-1,3), lights[0]);
+    
+    EXPECT_TRUE(inShadow);
+}
+
+
+
+
+
+
+
+TEST_F(SceneTest, NotOccludedPtLightAboveSphere)
+{
+    int spec = 21;
+    Scene scene;
+
+    scene.addSphere(sf::Vector3f(0, 1, 3), 1, sf::Color::Red, spec);
+    scene.addPlane(sf::Vector3f(-3, -1, 1), sf::Vector3f(-3, -1, 4), sf::Vector3f(3, -1, 4), sf::Vector3f(3, -1, 1));
+    scene.addPointLight(sf::Vector3f(0,3,3), 1);
+    
+    auto lights = scene.getLights();
+    
+    bool inShadow = scene.isInShadow(sf::Vector3f(0,2,3), lights[0]);
+    
+    EXPECT_FALSE(inShadow);
+}
+
+
+
+
+
+
+TEST_F(SceneTest, OccludedDirLightAboveSphere)
+{
+    int spec = 21;
+    Scene scene;
+
+    scene.addSphere(sf::Vector3f(0, 1, 3), 1, sf::Color::Red, spec);
+    scene.addPlane(sf::Vector3f(-3, -1, 1), sf::Vector3f(-3, -1, 4), sf::Vector3f(3, -1, 4), sf::Vector3f(3, -1, 1));
+
+    scene.addDirLight(sf::Vector3f(0,-1,0), 1);
+    
+    
+    bool inShadow = scene.isInShadow(sf::Vector3f(0,-1,3), scene.getLights()[0]);
+    
+    EXPECT_TRUE(inShadow);
+}
+
+
+
+
+
+
+
+
+
+TEST_F(SceneTest, NotOccludedDirLightAboveSphere)
+{
+    int spec = 21;
+    Scene scene;
+
+    scene.addSphere(sf::Vector3f(0, 1, 3), 1, sf::Color::Red, spec);
+    scene.addPlane(sf::Vector3f(-3, -1, 1), sf::Vector3f(-3, -1, 4), sf::Vector3f(3, -1, 4), sf::Vector3f(3, -1, 1));
+
+    scene.addDirLight(sf::Vector3f(0,-1,0), 1);
+    
+    
+    bool inShadow = scene.isInShadow(sf::Vector3f(0,2,3), scene.getLights()[0]);
+    
+    EXPECT_FALSE(inShadow);
+}
+
+
+
+
+
+
+
+TEST_F(SceneTest, NotOccludedPtLightAbovePlane)
+{
+    int spec = 21;
+    Scene scene;
+
+    scene.addSphere(sf::Vector3f(0, 1, 3), 1, sf::Color::Red, spec);
+    scene.addPlane(sf::Vector3f(-3, -1, 1), sf::Vector3f(-3, -1, 4), sf::Vector3f(3, -1, 4), sf::Vector3f(3, -1, 1));
+
+    scene.addPointLight(sf::Vector3f(0,-.5,3), 1);
+    
+    auto lights = scene.getLights();
+    
+    bool inShadow = scene.isInShadow(sf::Vector3f(0,-1,3), lights[0]);
+    
+    EXPECT_TRUE(inShadow);
+}
+
+
+
 #endif /* SceneTest_h */
