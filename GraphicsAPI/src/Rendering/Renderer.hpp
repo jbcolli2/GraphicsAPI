@@ -61,7 +61,7 @@ private:
 //    void f(int ii);
     
     
-    int max_reflections = 1;
+    int max_reflections = 0;
     
     
 };

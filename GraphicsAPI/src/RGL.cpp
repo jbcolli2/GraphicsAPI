@@ -13,6 +13,7 @@
 #include "Renderer.hpp"
 
 #include <SFML/Graphics.hpp>
+#include <nlohmann/json.hpp>
 
 using namespace rgl;
 
@@ -28,8 +29,9 @@ int main(int argc, const char * argv[]) {
 //    scene->addAmbLight(.2);
     scene->addPointLight(sf::Vector3f(0, 0, 0), .8);
     
-    scene->addSphere(sf::Vector3f(0,1,3), .5, sf::Color::Red, 2, .5);
-    scene->addSphere(sf::Vector3f(1,0,3.3), .7, sf::Color::Yellow, 30, .5);
+    scene->addSphere(sf::Vector3f(0,1,3), .5, sf::Color::Red, 2, 1);
+    scene->addSphere(sf::Vector3f(1,0,3.3), .7, sf::Color::Yellow, 30, 0);
+    scene->addPlane(sf::Vector3f(-5,-.3, 0), sf::Vector3f(-5,-.3, 7), sf::Vector3f(5,-.3, 7), sf::Vector3f(5,-.3, 0), sf::Color::Magenta);
     
     
     
